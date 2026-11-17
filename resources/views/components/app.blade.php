@@ -42,7 +42,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu&amp;display=swap" rel="stylesheet">
     <!-- main css for template -->
     <link rel="stylesheet" href="assets/css/style16791679.css?6" />
-    <link href="home/content/dist/fake-notification-min.html" rel="stylesheet" />
 
     <style>
         .hero-wrapper h1.banner__content-heading {
@@ -275,6 +274,17 @@
         .footer {
             --footer-bg-color: #000000;
         }
+
+        /* Preloader icon: use the logo artwork as a mask so it fills with the brand green */
+        .preloader__logo {
+            display: block;
+            height: 50px;
+            aspect-ratio: 1280 / 348;
+            background-color: #34E834;
+            -webkit-mask: url("{{ asset('assets/img/appicon.png') }}") center / contain no-repeat;
+            mask: url("{{ asset('assets/img/appicon.png') }}") center / contain no-repeat;
+            animation: floating 1s cubic-bezier(0.4, -0.35, 0.01, 1.08) infinite alternate;
+        }
     </style>
   <!-- Smartsupp Live Chat script -->
 <script type="text/javascript">
@@ -430,7 +440,7 @@ window.smartsupp||(function(d) {
                 <div class="footer__end">
                     <div class="footer__end-copyright">
                         <p class="mb-0">
-                            © 2025 All Rights Reserved By
+                            © {{ date('Y') }} All Rights Reserved By
                             Strategic Investment Pro
                         </p>
                     </div>
@@ -479,24 +489,6 @@ window.smartsupp||(function(d) {
 <!-- ===============>> scrollToTop start here <<================= -->
 <a href="#" class="scrollToTop scrollToTop--home1"><i class="fa-solid fa-arrow-up-from-bracket"></i></a>
 <!-- ===============>> scrollToTop ending here <<================= -->
-<div id="notification-1" class="notification">
-    <div class="notification-block">
-        <div class="notification-img">
-            <!-- Your image or icon -->
-            <i class="fa fa-dollar-sign" aria-hidden="true"></i>
-            <!-- / Your image or icon -->
-        </div>
-        <div class="notification-text-block">
-            <div class="notification-title">
-                <!-- Notification Title -->
-                Earning
-                <!-- / Notification Title -->
-            </div>
-            <div class="notification-text"></div>
-        </div>
-    </div>
-</div>
-
 <!-- vendor plugins -->
 
 <script src="assets/js/bootstrap.bundle.min.js"></script>
@@ -510,7 +502,6 @@ window.smartsupp||(function(d) {
 <script src="assets/plugins/slick/slick.min.js"></script>
 <script type="text/javascript" src="assets/js/typed.min.js"></script>
 <script src="assets/js/customc4cac4ca.js?1"></script>
-<script src="home/content/dist/jquery.fake-notification.min.html"></script>
 
 
 <script type="text/javascript">
@@ -525,52 +516,6 @@ window.smartsupp||(function(d) {
 <script type="text/javascript" src="translate.google.com/translate_a/elementa0d8a0d8.html?cb=googleTranslateElementInit">
 </script>
 
-<script>
-    $(document).ready(function() {
-
-
-            $('#notification-1').Notification({
-                // Notification varibles
-                Varible1: ["Dirk", "Johnny", "Watkin ", "Alejandro", "Vina", "Tony", "Ahmed", "Jackson",
-                    "Noah", "Aiden", "Darren", "Isabella", "Aria", "John", "Greyson", "Peter",
-                    "Mohammed", "William",
-                    "Lucas", "Amelia", "Mason", "Mathew", "Richard", "Chris", "Mia", "Oliver"
-                ],
-                Varible2: ["USA", "UAE", "ITALY", "FLORIDA", "MEXICO", "INDIA", "CHINA", "CAMBODIA",
-                    "UNITED KINGDOM", "GERMANY", "AUSTRALIA", "BANGLADESH", "SWEDEN", "PAKISTAN",
-                    "MALDIVES", "SEYCHELLES",
-                    "BOLIVIA",
-                    "SOUTH AFRICA", "ZAMBIA", "NIGERIA", "INDIA", "SAUDI ARABIA", "CHILE",
-                    "PEUTO RICO"
-                ],
-
-                Amount: [10000, 25000, 55555, 66666, 44444, 33333, 33333],
-                Content: '[Varible1] from [Varible2] has just Earned <b>$[Amount]</b>.',
-                // Timer
-                Show: ['stable', 5, 10],
-                Close: 5,
-                Time: [0, 23],
-                // Notification style 
-                LocationTop: [false, '30%'],
-                LocationBottom: [true, '10%'],
-                LocationRight: [true, '10%'],
-                LocationLeft: [false, '10px'],
-                Background: '#000000',
-                BorderRadius: 5,
-                BorderWidth: 1,
-                BorderColor: '#34E834',
-                TextColor: 'white',
-                IconColor: '#ffffff',
-                // Notification Animated   
-                AnimationEffectOpen: 'slideInUp',
-                AnimationEffectClose: 'slideOutDown',
-                // Number of notifications
-                Number: 40,
-                // Notification link
-                Link: [false, 'index.html', '_blank']
-            });
-        });
-</script>
 <script>
     $(document).ready(function() {
             // Typed Initiate
