@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -10,59 +10,87 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
   
   <style>
+    [data-bs-theme=dark] {
+      --brand: #34E834;
+      --brand-hover: #36F936;
+      --bs-body-bg: #000000;
+      --bs-body-color: rgba(255, 255, 255, 0.85);
+      --bs-secondary-color: rgba(255, 255, 255, 0.65);
+      --bs-border-color: #2A2A2A;
+      --bs-link-color: #34E834;
+      --bs-link-color-rgb: 52, 232, 52;
+      --bs-link-hover-color: #36F936;
+      --bs-link-hover-color-rgb: 54, 249, 54;
+    }
     body {
-      background: #f5f9ff;
+      background: #000000;
       font-family: 'Segoe UI', sans-serif;
     }
     .signup-card {
       max-width: 500px;
       margin: 50px auto;
-      border: none;
-      box-shadow: 0 0 25px rgba(0,0,0,0.1);
+      background-color: #111111;
+      border: 1px solid #1F1F1F;
+      box-shadow: 0 0 40px rgba(52, 232, 52, 0.08);
       border-radius: 15px;
+    }
+    /* Logo artwork is purple; render it white on the dark card */
+    .signup-card img {
+      filter: brightness(0) invert(1);
     }
     .brand-name {
       font-weight: bold;
-      color: #4d2db7;
+      color: var(--brand);
+    }
+    .form-control,
+    .form-select {
+      background-color: #1A1A1A;
+      border-color: #2A2A2A;
+      color: #FFFFFF;
+    }
+    .form-control::placeholder {
+      color: rgba(255, 255, 255, 0.4);
     }
     .form-control:focus, .form-select:focus {
-      border-color: #6c63ff;
-      box-shadow: 0 0 0 0.25rem rgba(108, 99, 255, 0.25);
+      background-color: #1A1A1A;
+      color: #FFFFFF;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 0.25rem rgba(52, 232, 52, 0.25);
     }
-    .btn-purple {
-      background-color: #6c63ff;
-      color: #fff;
+    .form-check-input:checked {
+      background-color: var(--brand);
+      border-color: var(--brand);
     }
-    .btn-purple:hover {
-      background-color: #574b90;
+    .form-check-input:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 0.25rem rgba(52, 232, 52, 0.25);
     }
 
+    /* Primary button (class name kept from the old purple theme; page scripts reference it) */
     .btn-purple {
-      background-color: #6c63ff;
-      color: #fff;
+      background-color: var(--brand);
+      border-color: var(--brand);
+      color: #000000;
+      font-weight: 600;
       transition: background-color 0.3s ease;
-      opacity: 0.9;
     }
 
-    .btn-purple:hover {
-      background-color: #574b90;
-      opacity: 1;
-      color: white;
-    }
-
-    /* Active (loading) state - full purple */
-    .btn-purple.loading {
-      background-color: #4d2db7 !important;
-      color: white;
-      opacity: 1;
+    .btn-purple:hover,
+    .btn-purple:focus,
+    .btn-purple:active,
+    .btn-purple:disabled {
+      background-color: var(--brand-hover) !important;
+      border-color: var(--brand-hover) !important;
+      color: #000000 !important;
     }
 
     .input-group-text {
-      background-color: #f0f0f0;
+      background-color: #1F1F1F;
+      border-color: #2A2A2A;
+      color: rgba(255, 255, 255, 0.7);
       cursor: pointer;
     }
     select.form-select {
-      background-color: #fff;
       border-radius: 10px;
       padding: 0.6rem;
     }

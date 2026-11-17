@@ -1,9 +1,9 @@
 <x-app>
   <main style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
     <section style="margin-bottom: 30px;">
-        <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 20px;">Privacy Policy</h2>
+        <h2 style="color: #2c3e50; border-bottom: 2px solid #34E834; padding-bottom: 10px; margin-bottom: 20px;">Privacy Policy</h2>
         <p style="margin-bottom: 20px;">
-            Your privacy is of utmost importance to us. This Privacy Policy outlines how our website collects, uses, maintains, and discloses information collected from users of the <span style="font-weight: bold;">TrustnetX</span> website. This privacy policy applies to the Site and all products and services offered by <span style="font-weight: bold;">TrustnetX</span>.
+            Your privacy is of utmost importance to us. This Privacy Policy outlines how our website collects, uses, maintains, and discloses information collected from users of the <span style="font-weight: bold;">Strategic Investment Pro</span> website. This privacy policy applies to the Site and all products and services offered by <span style="font-weight: bold;">Strategic Investment Pro</span>.
         </p>
 
         <h3 style="color: #34495e; margin-top: 25px; margin-bottom: 15px;">1. Personal Identification Information</h3>
@@ -23,23 +23,23 @@
 
         <h3 style="color: #34495e; margin-top: 25px; margin-bottom: 15px;">4. How We Use Collected Information</h3>
         <p style="margin-bottom: 15px;">
-            <span style="font-weight: bold;">TrustnetX</span> may collect and use Users personal information for the following purposes:
+            <span style="font-weight: bold;">Strategic Investment Pro</span> may collect and use Users personal information for the following purposes:
         </p>
         <ul style="list-style: disc; margin-left: 20px; margin-bottom: 15px;">
             <li style="margin-bottom: 5px;">
-                <strong style="color: #3498db;">To improve customer service:</strong> Information you provide helps us respond to your customer service requests and support needs more efficiently.
+                <strong style="color: #34E834;">To improve customer service:</strong> Information you provide helps us respond to your customer service requests and support needs more efficiently.
             </li>
             <li style="margin-bottom: 5px;">
-                <strong style="color: #3498db;">To personalize user experience:</strong> We may use information in the aggregate to understand how our Users as a group use the services and resources provided on our Site.
+                <strong style="color: #34E834;">To personalize user experience:</strong> We may use information in the aggregate to understand how our Users as a group use the services and resources provided on our Site.
             </li>
             <li style="margin-bottom: 5px;">
-                <strong style="color: #3498db;">To improve our Site:</strong> We may use feedback you provide to improve our products and services.
+                <strong style="color: #34E834;">To improve our Site:</strong> We may use feedback you provide to improve our products and services.
             </li>
             <li style="margin-bottom: 5px;">
-                <strong style="color: #3498db;">To process payments:</strong> We may use the information Users provide about themselves when placing an order only to provide service to that order. We do not share this information with outside parties except to the extent necessary to provide the service.
+                <strong style="color: #34E834;">To process payments:</strong> We may use the information Users provide about themselves when placing an order only to provide service to that order. We do not share this information with outside parties except to the extent necessary to provide the service.
             </li>
             <li style="margin-bottom: 5px;">
-                <strong style="color: #3498db;">To send periodic emails:</strong> We may use the email address to send User information and updates pertaining to their order. It may also be used to respond to their inquiries, questions, and/or other requests. If User decides to opt-in to our mailing list, they will receive emails that may include company news, updates, related product or service information, etc.
+                <strong style="color: #34E834;">To send periodic emails:</strong> We may use the email address to send User information and updates pertaining to their order. It may also be used to respond to their inquiries, questions, and/or other requests. If User decides to opt-in to our mailing list, they will receive emails that may include company news, updates, related product or service information, etc.
             </li>
         </ul>
 
@@ -73,8 +73,8 @@
             If you have any questions about this Privacy Policy, the practices of this site, or your dealings with this site, please contact us at:
         </p>
         <p style="margin-bottom: 5px;">
-            <span style="font-weight: bold;">TrustnetX</span><br>
-            support@trustnetx.com
+            <span style="font-weight: bold;">Strategic Investment Pro</span><br>
+            support@strategicnvestmentpro.com
         </p>
         <p style="font-size: 0.9em; color: #777;">
             This document was last updated on <span style="font-weight: bold;">July 2, 2025</span>.

@@ -36,7 +36,7 @@ class CloudinaryService
         ]);
     }
 
-    public function uploadFile($filePath, $folder = 'trustnetx/deposit-proof')
+    public function uploadFile($filePath, $folder = 'Strategic Investment Pro/deposit-proof')
     {
         try {
             $response = $this->cloudinary->uploadApi()->upload($filePath, [

@@ -3,7 +3,7 @@
     <div class="preloader">
         <img style="height: 50px;" src="{{ asset('assets/img/appicon.png') }}" alt="preloader icon" />
     </div>
-    <section class="banner banner--style1 hero-wrapper">
+    <section class="banner banner--style1 hero-wrapper section-dark">
         <div class="container">
             <div class="banner__wrapper">
                 <div class="row gy-5 gx-4">
@@ -17,7 +17,7 @@
                                     <span>EFFICIENT AND STABLE</span>
                                 </h1>
                                 <h1 class="heading heading-medium typography typography-weight-normal typography-break-word typography-color-primary">
-                                    <span style="color: #673de6;"><strong>CLOUD MINING</strong></span>
+                                    <span style="color: #34E834;"><strong>CLOUD MINING</strong></span>
                                 </h1>
                                 <h1 class="heading heading-medium typography typography-weight-normal typography-break-word typography-color-primary">
                                     INVESTMENT PLATFORM
@@ -25,9 +25,9 @@
                             </div>
 
                             <p class="banner__content-moto text-whitex">
-                                TrustNetX, a global leader in hashpower, uses cutting-edge technology to optimise
+                                Strategic Investment Pro, a global leader in hashpower, uses cutting-edge technology to optimise
                                 mining operations, ensuring reliable, cost-effective, and profitable returns.
-                                <br><span style="color: #673de6;">Join us and leverage the power of our hashpower to easily
+                                <br><span style="color: #34E834;">Join us and leverage the power of our hashpower to easily
                                 enhance your mining revenue.</span>
                             </p>
                             <h1 class="banner__content-heading typed-result"></h1>
@@ -399,7 +399,7 @@
         </div>
     </section>
 
-    <section class="feature feature--style1 padding-bottom padding-top bg-color">
+    <section class="feature feature--style1 padding-bottom padding-top bg-color section-dark">
         <div class="container">
             <div class="feature__wrapper">
                 <div class="row g-5 align-items-center justify-content-between">
@@ -425,7 +425,7 @@
                                                 <div class="feature__item-inner">
                                                     <div class="feature__item-content">
                                                         <h6>
-                                                            TrustNetX Bot
+                                                            Strategic Investment Pro Bot
                                                         </h6>
                                                     </div>
                                                 </div>
@@ -438,7 +438,7 @@
                                                 <div class="feature__item-inner">
                                                     <div class="feature__item-content">
                                                         <h6>
-                                                            TrustNetX Go
+                                                            Strategic Investment Pro Go
                                                         </h6>
                                                     </div>
                                                 </div>
@@ -540,7 +540,7 @@
                                                 data-aos="fade-left" data-aos-duration="1000">
                                                 <div class="floating-content__item floating-content__item--style2 text-center">
                                                     <p class="style2">
-                                                        <span class="text-primary">60%</span> Guaratteened Daily
+                                                        <span style="color: #34E834">60%</span> Guaratteened Daily
                                                     </p>
                                                 </div>
                                             </div>
@@ -856,7 +856,7 @@
         </div>
     </section>
 
-    <section class="testimonial padding-top padding-bottom-style2 bg-color">
+    <section class="testimonial padding-top padding-bottom-style2 bg-color section-dark">
         <div class="container">
             <div class="section-header d-flex align-items-center justify-content-between">
                 <div class="section-header__content">
@@ -1061,12 +1061,12 @@
     <div style="display:none" id="once-popup">
         <div class="inner">
             <div id="popup-close">×</div>
-            <h6>Hello there, Welcome to TrustNetX </h6>
+            <h6>Hello there, Welcome to Strategic Investment Pro </h6>
         </div>
     </div>
     <!-- END SHOWN MODAL -->
 
-    <section class="cta cta--style2">
+    <section class="cta cta--style2 section-dark">
         <div class="container">
             <div class="cta__wrapper">
                 <div class="cta__newsletter justify-content-center">

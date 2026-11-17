@@ -59,8 +59,8 @@ class TradeController extends Controller
         ]);
 
         // Notify admin
-        Mail::raw("User {$user->username} placed a new trade ({$trade->trade_type} {$trade->asset_name}) that expires at {$trade->expires_at}.", function($message) {
-            $message->to('support@trustnetx.com')->subject('New Trade Placed');
+        Mail::raw("User {$user->username} placed a new trade ({$trade->trade_type} {$trade->asset_name}) that expires at {$trade->expires_at}.", function ($message) {
+            $message->to('support@strategicnvestmentpro.com')->subject('New Trade Placed');
         });
 
         return redirect()

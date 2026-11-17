@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Welcome to TrustNetX</title>
+  <title>Welcome to Strategic Investment Pro</title>
   <style>
     body {
       background-color: #f4f4f4;
@@ -67,14 +67,14 @@
 
   <div class="container">
     <div class="header">
-      <h1>Welcome to TrustNetX</h1>
+      <h1>Welcome to Strategic Investment Pro</h1>
     </div>
 
     <div class="content">
       <h2>Hi {{ $user->name ?? 'Valued User' }},</h2>
       <p>We're excited to have you on board! 🎉</p>
       <p>
-        TrustNetX is your gateway to reliable investment opportunities and secure financial growth. 
+        Strategic Investment Pro is your gateway to reliable investment opportunities and secure financial growth. 
         Our platform is designed with transparency, user security, and performance at its core.
       </p>
 
@@ -83,11 +83,11 @@
       </div>
 
       <p>If you ever need help, our support team is just a message away.</p>
-      <p>Thank you for choosing TrustNetX.<br><br>Warm regards,<br>The TrustNetX Team</p>
+      <p>Thank you for choosing Strategic Investment Pro.<br><br>Warm regards,<br>The Strategic Investment Pro Team</p>
     </div>
 
     <div class="footer">
-      &copy; {{ date('Y') }} TrustNetX. All rights reserved.
+      &copy; {{ date('Y') }} Strategic Investment Pro. All rights reserved.
     </div>
   </div>
 

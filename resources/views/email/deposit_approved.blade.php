@@ -13,6 +13,6 @@
 
   <p>Thank you for investing with us.</p>
 
-  <p>Regards,<br>TrustNetX</p>
+  <p>Regards,<br>Strategic Investment Pro</p>
 </body>
 </html>

@@ -4,24 +4,24 @@
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
 <head>
-    <title>The Trading and Investment Specialist |TrustNetX</title>
+    <title>The Trading and Investment Specialist |Strategic Investment Pro</title>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Sites meta Data -->
-    <meta name="application-name" content="TrustNetX" />
+    <meta name="application-name" content="Strategic Investment Pro" />
     <meta name="author" content="endycode" />
-    <meta name="keywords" content="TrustNetX, Crypto, Forex, Indices, and Stocks Trading Business" />
+    <meta name="keywords" content="Strategic Investment Pro, Crypto, Forex, Indices, and Stocks Trading Business" />
     <meta name="description"
-        content="Welcome to TrustNetX,TrustNetX is a fully licensed and regulated online with an online trading platform that empowers you to invest across global financial markets.">
+        content="Welcome to Strategic Investment Pro,Strategic Investment Pro is a fully licensed and regulated online with an online trading platform that empowers you to invest across global financial markets.">
     <meta name="robots" content="index, follow">
     <!-- OG meta data -->
 
-    <meta property="og:site_name" content="TrustNetX" />
+    <meta property="og:site_name" content="Strategic Investment Pro" />
 
     <meta property="og:description"
-        content="Welcome to TrustNetX,TrustNetX is a fully licensed and regulated online with an online trading platform that empowers you to invest across global financial markets." />
+        content="Welcome to Strategic Investment Pro,Strategic Investment Pro is a fully licensed and regulated online with an online trading platform that empowers you to invest across global financial markets." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="{{ asset('assets/img/favicon.jpg') }}" />
 
@@ -49,7 +49,7 @@
             display: inline-block;
             margin: 0px;
             height: 35px;
-            color: #673de6;
+            color: #34E834;
             font-size: 35px;
             font-weight: 600;
         }
@@ -65,7 +65,7 @@
         }
 
         .banner:before {
-            background-color: #673de6;
+            background-color: #34E834;
             block-size: 65%;
             -webkit-clip-path: polygon(0 60%, 100% 40%, 100% 100%, 0 100%);
             clip-path: polygon(0 60%, 100% 40%, 100% 100%, 0 100%);
@@ -203,6 +203,78 @@
                 padding-block: 15px !important;
             }
         }
+
+        /* Dark sections: re-scope the theme's dark-mode variables to a single section */
+        .section-dark {
+            --body-color: #000000;
+            --title-color: #FFFFFF;
+            --title-color-style2: #BBC2C7;
+            --text-color: rgba(255, 255, 255, 0.7);
+            --text-color-light: #FFFFFF;
+            --border-color: rgba(230, 237, 251, 0.12);
+            --border-color-2: rgba(255, 255, 255, 0.08);
+            --border-color-4: #1B2D29;
+            --border-color-5: rgba(255, 255, 255, 0.08);
+            --border-color-6: rgba(255, 255, 255, 0.08);
+            --border-color-7: #1B2D29;
+            --header-border-color: rgba(255, 255, 255, 0.12);
+            --social-border-color: rgba(255, 255, 255, 0.08);
+            --social-border-color-2: rgba(255, 255, 255, 0.08);
+            --social-border-color-3: rgba(255, 255, 255, 0.1);
+            --bg-color: rgba(237, 242, 248, 0.08);
+            --bg-color-2: #161616;
+            --bg-color-3: #000000;
+            --bg-color-6: #161616;
+            --bg-color-7: rgba(255, 255, 255, 0.04);
+            --bg-color-9: #000000;
+            --bg-grad-color: #1A1A1A;
+            --bg-grad-color-2: rgba(213, 229, 249, 0.16);
+            --bg-grad-color-3: rgba(255, 255, 255, 0.06);
+            --bg-team: #161616;
+            --wh-color: #161616;
+            --black-color: #FFFFFF;
+            --floating-content-bg-color: rgba(30, 30, 30, 0.85);
+            --floating-content-bg-color-2: rgba(255, 255, 255, 0.08);
+            --service-item-border-color: #161616;
+            --service-item-bg-color: #111111;
+            --faq-item-btn-border-color: rgba(255, 255, 255, 0.08);
+            --faq-bg-color: #111111;
+            --extra-bg-color: #111111;
+            --tag-bg-color: #0F2A0F;
+            --bg-shape-color: rgba(213, 229, 249, 0.08);
+            --bg-shape-color-2: rgba(213, 229, 249, 0.16);
+            --arrow-color1: #2A2A2A;
+            --arrow-icon-color: #FFFFFF;
+            background-color: #000000 !important;
+            color: var(--text-color);
+        }
+
+        .section-dark .typed-cursor {
+            color: var(--title-color);
+        }
+
+        /* Logo artwork is dark-on-transparent; render it white on the black header */
+        .header-section--style1.section-dark .logo img {
+            filter: brightness(0) invert(1);
+        }
+
+        /* Green CTA card keeps dark text for contrast */
+        .section-dark .cta__newsletter-inner {
+            --title-color: #000000;
+            --text-color: #0C263A;
+        }
+
+        /* Black text on the green primary buttons, as on bright green white text is unreadable */
+        .trk-btn.trk-btn--primary,
+        .trk-btn.trk-btn--primary span,
+        .trk-btn.active.trk-btn--primary,
+        .trk-btn:hover.trk-btn--primary {
+            color: #000000;
+        }
+
+        .footer {
+            --footer-bg-color: #000000;
+        }
     </style>
   <!-- Smartsupp Live Chat script -->
 <script type="text/javascript">
@@ -221,7 +293,7 @@ window.smartsupp||(function(d) {
 
 </head>
 <body>
-    <header class="header-section--style1">
+    <header class="header-section--style1 section-dark">
         <div class="header-bottom">
             <div class="container">
                 <div class="header-wrapper">
@@ -282,9 +354,9 @@ window.smartsupp||(function(d) {
                 <div class="row gy-5 gx-4">
                     <div class="col-md-6">
                         <div class="footer__about">
-                            <a href="{{ url('/') }}" class="footer__about-logo fs-1" style="color: #673de6">TrustNetX</a>
+                            <a href="{{ url('/') }}" class="footer__about-logo fs-1" style="color: #34E834">Strategic Investment Pro</a>
                             <p class="footer__about-moto">
-                                Welcome to TrustNetX. Cloud mining is super simple - Your mining
+                                Welcome to Strategic Investment Pro. Cloud mining is super simple - Your mining
                                 rigs are already set up and running. As soon as you’ve set up your account, you can
                                 start to mine your first coins using our Bitcoin cloud mining service!.
 
@@ -359,7 +431,7 @@ window.smartsupp||(function(d) {
                     <div class="footer__end-copyright">
                         <p class="mb-0">
                             © 2025 All Rights Reserved By
-                            TrustNetX
+                            Strategic Investment Pro
                         </p>
                     </div>
                     <div>
@@ -486,7 +558,7 @@ window.smartsupp||(function(d) {
                 Background: '#000000',
                 BorderRadius: 5,
                 BorderWidth: 1,
-                BorderColor: '#091765',
+                BorderColor: '#34E834',
                 TextColor: 'white',
                 IconColor: '#ffffff',
                 // Notification Animated   
