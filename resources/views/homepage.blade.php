@@ -1,7 +1,7 @@
 <x-app>
     <!-- ===============>> Preloader start here <<================= -->
     <div class="preloader">
-        <span class="preloader__logo" role="img" aria-label="preloader icon"></span>
+        <x-brand-logo :size="56" :text="false" />
     </div>
     <section class="banner banner--style1 hero-wrapper section-dark">
         <div class="container">

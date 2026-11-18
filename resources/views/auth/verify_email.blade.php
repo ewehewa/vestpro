@@ -1,5 +1,8 @@
 <x-auth>
   <div class="card signup-card p-4">
+    <div class="d-flex justify-content-center py-2">
+      <x-brand-logo :href="url('/')" :size="36" />
+    </div>
     <h5 class="text-center text-secondary mb-4">Verify Your Email</h5>
 
     <form id="verifyEmailForm">

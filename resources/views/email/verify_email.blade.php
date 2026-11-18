@@ -7,6 +7,10 @@
 <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4;">
 
   <div style="max-width: 600px; margin: 30px auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);">
+    <div style="text-align: center; margin-bottom: 24px;">
+      <img src="{{ asset('assets/img/logo-icon.png') }}" width="40" height="40" alt="" style="display: inline-block; vertical-align: middle; border: 0;">
+      <span style="display: inline-block; vertical-align: middle; margin-left: 8px; font-size: 20px; font-weight: bold; color: #000000;">Strategic Investment <span style="color: #22B822;">Pro</span></span>
+    </div>
     
     <h2 style="color: #333333; font-weight: 600; margin-bottom: 20px;">Hi there,</h2>
 

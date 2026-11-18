@@ -23,9 +23,11 @@
     <meta property="og:description"
         content="Welcome to Strategic Investment Pro,Strategic Investment Pro is a fully licensed and regulated online with an online trading platform that empowers you to invest across global financial markets." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="{{ asset('assets/img/favicon.jpg') }}" />
+    <meta property="og:image" content="{{ asset('assets/img/logo-icon.png') }}" />
 
-    <link rel="shortcut icon" href="{{ asset('assets/img/favicon.jpg') }}" type="image/x-icon" />
+    <link rel="icon" href="{{ asset('assets/img/logo-icon.svg') }}" type="image/svg+xml" />
+    <link rel="icon" href="{{ asset('assets/img/logo-icon.png') }}" type="image/png" />
+    <link rel="apple-touch-icon" href="{{ asset('assets/img/logo-icon.png') }}" />
 
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/css/aos.css" />
@@ -252,9 +254,28 @@
             color: var(--title-color);
         }
 
-        /* Logo artwork is dark-on-transparent; render it white on the black header */
-        .header-section--style1.section-dark .logo img {
-            filter: brightness(0) invert(1);
+        /* Header logo (markup and base styles live in components/brand-logo.blade.php) */
+        .header-wrapper .logo {
+            width: auto !important;
+            max-width: none !important;
+        }
+
+        .header-wrapper .logo a.brand-logo {
+            display: inline-flex;
+            color: var(--title-color);
+            font-family: 'Ubuntu', sans-serif;
+        }
+
+        @media (min-width: 992px) and (max-width: 1199px) {
+            .header-wrapper .logo a.brand-logo {
+                --logo-size: 34px !important;
+            }
+        }
+
+        @media (max-width: 575px) {
+            .header-wrapper .logo a.brand-logo {
+                --logo-size: 30px !important;
+            }
         }
 
         /* Green CTA card keeps dark text for contrast */
@@ -275,14 +296,8 @@
             --footer-bg-color: #000000;
         }
 
-        /* Preloader icon: use the logo artwork as a mask so it fills with the brand green */
-        .preloader__logo {
-            display: block;
-            height: 50px;
-            aspect-ratio: 1280 / 348;
-            background-color: #34E834;
-            -webkit-mask: url("{{ asset('assets/img/appicon.png') }}") center / contain no-repeat;
-            mask: url("{{ asset('assets/img/appicon.png') }}") center / contain no-repeat;
+        /* Preloader icon */
+        .preloader .brand-logo {
             animation: floating 1s cubic-bezier(0.4, -0.35, 0.01, 1.08) infinite alternate;
         }
     </style>
@@ -308,9 +323,7 @@ window.smartsupp||(function(d) {
             <div class="container">
                 <div class="header-wrapper">
                     <div class="logo">
-                        <a href="{{ url("/") }}">
-                            <img class="logo dark img-fluid" src="{{ asset('assets/img/applogo.png') }}" alt="logo" />
-                        </a>
+                        <x-brand-logo :href="url('/')" />
                     </div>
                     <div class="menu-area">
                         <ul class="menu menu--style1">

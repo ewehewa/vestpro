@@ -11,9 +11,14 @@
         <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden;">
           
           <!-- Logo -->
-          <tr style="background-color: #2563eb;">
-            <td align="center" style="padding: 20px;">
-              <img src="https://yourdomain.com/logo.png" alt="Logo" style="max-width: 150px;">
+          <tr style="background-color:#000000;">
+            <td align="center" style="padding:20px;">
+              <table cellpadding="0" cellspacing="0" role="presentation">
+                <tr>
+                  <td style="padding-right:10px;"><img src="{{ asset('assets/img/logo-icon.png') }}" width="36" height="36" alt="" style="display:block;border:0;"></td>
+                  <td style="color:#ffffff;font-size:20px;font-weight:bold;font-family:Arial,sans-serif;">Strategic Investment <span style="color:#34E834;">Pro</span></td>
+                </tr>
+              </table>
             </td>
           </tr>
 

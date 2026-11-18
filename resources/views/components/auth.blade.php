@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Auth | TrustNex</title>
+  <title>Account | Strategic Investment Pro</title>
+  <link rel="icon" href="{{ asset('assets/img/logo-icon.svg') }}" type="image/svg+xml" />
+  <link rel="icon" href="{{ asset('assets/img/logo-icon.png') }}" type="image/png" />
   <!-- CSS Links -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
@@ -34,9 +36,8 @@
       box-shadow: 0 0 40px rgba(52, 232, 52, 0.08);
       border-radius: 15px;
     }
-    /* Logo artwork is purple; render it white on the dark card */
-    .signup-card img {
-      filter: brightness(0) invert(1);
+    .signup-card .brand-logo {
+      color: #FFFFFF;
     }
     .brand-name {
       font-weight: bold;

@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Dashboard - Trading Platform</title>
+    <title>Dashboard | Strategic Investment Pro</title>
+    <link rel="icon" href="{{ asset('assets/img/logo-icon.svg') }}" type="image/svg+xml" />
+    <link rel="icon" href="{{ asset('assets/img/logo-icon.png') }}" type="image/png" />
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -199,9 +201,16 @@ window.smartsupp||(function(d) {
     }
 }
 
+/* Header logo: white wordmark on the dark top bar; icon only on phones */
+.dashboard-logo {
+    color: #FFFFFF;
+}
 
-
-
+@media (max-width: 575px) {
+    .dashboard-logo .brand-logo__text {
+        display: none;
+    }
+}
 
     </style>
     <!-- Sidebar -->
@@ -314,6 +323,7 @@ window.smartsupp||(function(d) {
                         <button class="hamburger-btn" id="sidebarToggle">
                             <i class="fas fa-bars"></i>
                         </button>
+                        <x-brand-logo :href="route('dashboard')" :size="32" class="dashboard-logo" />
                         
                         <!--<div class="language-selector">-->
                         <!--    <button class="btn btn-light dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown">-->

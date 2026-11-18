@@ -19,7 +19,7 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     .header {
-      background-color: #4d2db7;
+      background-color: #000000;
       padding: 30px;
       text-align: center;
       color: #ffffff;
@@ -46,8 +46,8 @@
       text-align: center;
     }
     .cta-button a {
-      background-color: #6c63ff;
-      color: #ffffff;
+      background-color: #34E834;
+      color: #000000;
       padding: 12px 24px;
       border-radius: 5px;
       text-decoration: none;
@@ -67,6 +67,7 @@
 
   <div class="container">
     <div class="header">
+      <img src="{{ asset('assets/img/logo-icon.png') }}" width="48" height="48" alt="" style="display:block;margin:0 auto 12px;border:0;">
       <h1>Welcome to Strategic Investment Pro</h1>
     </div>
 

@@ -1,9 +1,7 @@
 <x-auth>
 <div class="card signup-card p-4">
   <div class="d-flex justify-content-center py-2">
-    <a href="{{ url('/') }}" class="text-decoration-none">
-      <img src="{{ asset('assets/img/appicon.png') }}" width="140" height="40">
-    </a> 
+    <x-brand-logo :href="url('/')" :size="36" />
   </div>
   <h5 class="text-center text-secondary mb-4">Create a Free Account</h5>
 
