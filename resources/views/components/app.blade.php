@@ -671,7 +671,7 @@ window.smartsupp||(function(d) {
 <script src="assets/plugins/owlcarousel/owl.carousel.min.js"></script>
 <script src="assets/plugins/slick/slick.min.js"></script>
 <script type="text/javascript" src="assets/js/typed.min.js"></script>
-<script src="assets/js/customc4cac4ca.js?2"></script>
+<script src="assets/js/customc4cac4ca.js?3"></script>
 
 
 <script type="text/javascript">

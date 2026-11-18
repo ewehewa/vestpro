@@ -1,14 +1,29 @@
 // =================== preloader js  ================== //
-window.addEventListener('load', function () {
-    var preloader = document.querySelector('.preloader');
-    if (!preloader) return;
-    preloader.classList.add('is-leaving');
-    preloader.style.transition = 'opacity .6s ease';
-    preloader.style.opacity = '0';
-    setTimeout(function () {
-        preloader.style.display = 'none';
-    }, 700);
-});
+(function () {
+    // Keep the loader up long enough for one full draw of the logo animation,
+    // but never longer than MAX_MS in case a slow asset holds up the load event.
+    var MIN_VISIBLE_MS = 1800;
+    var MAX_MS = 8000;
+    var hidden = false;
+
+    function hidePreloader() {
+        if (hidden) return;
+        var preloader = document.querySelector('.preloader');
+        if (!preloader) return;
+        hidden = true;
+        preloader.classList.add('is-leaving');
+        preloader.style.transition = 'opacity .6s ease';
+        preloader.style.opacity = '0';
+        setTimeout(function () {
+            preloader.style.display = 'none';
+        }, 700);
+    }
+
+    window.addEventListener('load', function () {
+        setTimeout(hidePreloader, Math.max(0, MIN_VISIBLE_MS - performance.now()));
+    });
+    setTimeout(hidePreloader, MAX_MS);
+})();
 
 // =================== preloader js end ================== //
 
