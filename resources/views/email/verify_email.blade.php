@@ -8,7 +8,7 @@
 
   <div style="max-width: 600px; margin: 30px auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);">
     <div style="text-align: center; margin-bottom: 24px;">
-      <img src="{{ asset('assets/img/logo-icon.png') }}" width="40" height="40" alt="" style="display: inline-block; vertical-align: middle; border: 0;">
+      <img src="{{ isset($message) ? $message->embed(public_path('assets/img/logo-icon.png')) : asset('assets/img/logo-icon.png') }}" width="40" height="40" alt="" style="display: inline-block; vertical-align: middle; border: 0;">
       <span style="display: inline-block; vertical-align: middle; margin-left: 8px; font-size: 20px; font-weight: bold; color: #000000;">Strategic Investment <span style="color: #22B822;">Pro</span></span>
     </div>
     
@@ -19,7 +19,7 @@
     </p>
 
     <div style="text-align: center; margin: 30px 0;">
-      <span style="display: inline-block; background-color: #2563eb; color: #ffffff; font-size: 28px; font-weight: bold; padding: 12px 24px; border-radius: 6px; letter-spacing: 4px;">
+      <span style="display: inline-block; background-color: #34E834; color: #000000; font-size: 28px; font-weight: bold; padding: 12px 24px; border-radius: 6px; letter-spacing: 4px;">
         {{ $otp }}
       </span>
     </div>

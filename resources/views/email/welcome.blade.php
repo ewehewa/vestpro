@@ -67,7 +67,7 @@
 
   <div class="container">
     <div class="header">
-      <img src="{{ asset('assets/img/logo-icon.png') }}" width="48" height="48" alt="" style="display:block;margin:0 auto 12px;border:0;">
+      <img src="{{ isset($message) ? $message->embed(public_path('assets/img/logo-icon.png')) : asset('assets/img/logo-icon.png') }}" width="48" height="48" alt="" style="display:block;margin:0 auto 12px;border:0;">
       <h1>Welcome to Strategic Investment Pro</h1>
     </div>
 
