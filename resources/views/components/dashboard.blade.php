@@ -201,16 +201,6 @@ window.smartsupp||(function(d) {
     }
 }
 
-/* Header logo: white wordmark on the dark top bar; icon only on phones */
-.dashboard-logo {
-    color: #FFFFFF;
-}
-
-@media (max-width: 575px) {
-    .dashboard-logo .brand-logo__text {
-        display: none;
-    }
-}
 
     </style>
     <!-- Sidebar -->
@@ -248,6 +238,7 @@ window.smartsupp||(function(d) {
                     <i class="fas fa-history"></i>
                     <span>Transactions</span>
                 </a>
+                {{-- TODO: Copy Trading and Signals hidden for now; uncomment to bring them back.
                 <a href="{{ route('user.traders.index') }}" class="sidebar-item">
                     <i class="fas fa-user-tie"></i>
                     <span>Copy Trading</span>
@@ -256,14 +247,17 @@ window.smartsupp||(function(d) {
                     <i class="fas fa-user-tie"></i>
                     <span>Signals</span>
                 </a>
+                --}}
                 <a href="{{ route('trade.index') }}" class="sidebar-item">
                     <i class="fas fa-exchange-alt"></i>
                     <span>Trade</span>
                 </a>
+                {{-- TODO: NFTs hidden for now; uncomment to bring it back.
                 <a href="{{ route('nfts.marketplace') }}" class="sidebar-item">
                     <i class="fas fa-cube"></i>
                     <span>NFTs</span>
                 </a>
+                --}}
                  <a href="{{ route('dashboard.news') }}" class="sidebar-item">
                     <i class="fas fa-newspaper"></i>
                     <span>News</span>
@@ -323,7 +317,6 @@ window.smartsupp||(function(d) {
                         <button class="hamburger-btn" id="sidebarToggle">
                             <i class="fas fa-bars"></i>
                         </button>
-                        <x-brand-logo :href="route('dashboard')" :size="32" class="dashboard-logo" />
                         
                         <!--<div class="language-selector">-->
                         <!--    <button class="btn btn-light dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown">-->

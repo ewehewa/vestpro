@@ -102,6 +102,7 @@
                 <i class="fas fa-envelope"></i>
                 <span class="menu-item-text">Send Email</span>
             </a>
+            {{-- TODO: Copy Trading (traders), NFTs and Signals hidden for now; uncomment to bring them back.
              <a href="{{ route('admin.traders.create') }}" class="menu-item">
                 <i class="fas fa-user-tie"></i>
                 <span class="menu-item-text">Add Trader</span>
@@ -118,6 +119,7 @@
                 <i class="fas fa-cogs"></i>
                 <span class="menu-item-text">Add Signals</span>
             </a>
+            --}}
         </nav>
     </aside>
 
