@@ -201,6 +201,10 @@ window.smartsupp||(function(d) {
     }
 }
 
+/* Header logo: white wordmark on the dark top bar (shown on desktop only via d-none d-lg-inline-flex) */
+.dashboard-logo {
+    color: #FFFFFF;
+}
 
     </style>
     <!-- Sidebar -->
@@ -317,7 +321,10 @@ window.smartsupp||(function(d) {
                         <button class="hamburger-btn" id="sidebarToggle">
                             <i class="fas fa-bars"></i>
                         </button>
-                        
+
+                        <!-- Logo: desktop only (lg and up) -->
+                        <x-brand-logo :href="route('dashboard')" :size="32" class="dashboard-logo d-none d-lg-inline-flex" />
+
                         <!--<div class="language-selector">-->
                         <!--    <button class="btn btn-light dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown">-->
                         <!--        <div class="flag-us me-2"></div>-->
