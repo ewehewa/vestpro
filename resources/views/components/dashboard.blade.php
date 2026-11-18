@@ -201,7 +201,21 @@ window.smartsupp||(function(d) {
     }
 }
 
-/* Header logo: white wordmark on the dark top bar (shown on desktop only via d-none d-lg-inline-flex) */
+/* Logo block filling the empty corner above the sidebar (shown on desktop only via d-none d-lg-flex) */
+.dashboard-brand {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 80px;
+    align-items: center;
+    padding: 0 24px;
+    background-color: #1a1d29;
+    border-bottom: 1px solid #2d3748;
+    border-right: 1px solid #374151;
+    z-index: 1001;
+}
+
 .dashboard-logo {
     color: #FFFFFF;
 }
@@ -311,6 +325,11 @@ window.smartsupp||(function(d) {
     <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
+    <!-- Logo: desktop only (lg and up), in the top-left corner above the sidebar -->
+    <div class="dashboard-brand d-none d-lg-flex">
+        <x-brand-logo :href="route('dashboard')" :size="32" class="dashboard-logo" />
+    </div>
+
     <!-- Header -->
     <header class="top-header">
         <div class="container-fluid px-4">
@@ -321,9 +340,6 @@ window.smartsupp||(function(d) {
                         <button class="hamburger-btn" id="sidebarToggle">
                             <i class="fas fa-bars"></i>
                         </button>
-
-                        <!-- Logo: desktop only (lg and up) -->
-                        <x-brand-logo :href="route('dashboard')" :size="32" class="dashboard-logo d-none d-lg-inline-flex" />
 
                         <!--<div class="language-selector">-->
                         <!--    <button class="btn btn-light dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown">-->
