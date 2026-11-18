@@ -1,7 +1,21 @@
 <x-app>
     <!-- ===============>> Preloader start here <<================= -->
-    <div class="preloader">
-        <x-brand-logo :size="56" :text="false" />
+    <div class="preloader" role="status" aria-label="Loading Strategic Investment Pro">
+        <div class="loader">
+            <div class="loader__emblem">
+                <svg class="loader__orbit" viewBox="0 0 100 100" aria-hidden="true">
+                    <circle class="loader__orbit-track" cx="50" cy="50" r="46" />
+                    <circle class="loader__orbit-arc" cx="50" cy="50" r="46" pathLength="100" />
+                </svg>
+                <svg class="loader__mark" viewBox="0 0 40 40" aria-hidden="true">
+                    <rect width="40" height="40" rx="10" fill="#34E834" />
+                    <path class="loader__line" d="M9 29l8-8 5 4 10-12" pathLength="1" />
+                    <path class="loader__head" d="M24.5 13H32v7.5" pathLength="1" />
+                </svg>
+            </div>
+            <div class="loader__name">Strategic Investment <span>Pro</span></div>
+            <div class="loader__bar"><span></span></div>
+        </div>
     </div>
     <section class="banner banner--style1 hero-wrapper section-dark">
         <div class="container">

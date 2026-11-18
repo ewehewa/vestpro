@@ -296,9 +296,166 @@
             --footer-bg-color: #000000;
         }
 
-        /* Preloader icon */
-        .preloader .brand-logo {
-            animation: floating 1s cubic-bezier(0.4, -0.35, 0.01, 1.08) infinite alternate;
+        /* Preloader: arrow draws itself inside the mark, a slow arc orbits it, name and bar fade up */
+        .preloader {
+            background: radial-gradient(circle at 50% 45%, rgba(52, 232, 52, 0.10) 0%, rgba(0, 0, 0, 0) 45%), #000000;
+        }
+
+        .preloader.is-leaving {
+            pointer-events: none;
+        }
+
+        .preloader.is-leaving .loader {
+            transform: translateY(-12px) scale(0.98);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .loader__emblem {
+            position: relative;
+            width: 104px;
+            height: 104px;
+            display: grid;
+            place-items: center;
+        }
+
+        .loader__orbit {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            animation: loader-spin 2.4s linear infinite;
+        }
+
+        .loader__orbit-track,
+        .loader__orbit-arc {
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .loader__orbit-track {
+            stroke: rgba(255, 255, 255, 0.08);
+        }
+
+        .loader__orbit-arc {
+            stroke: #34E834;
+            stroke-linecap: round;
+            stroke-dasharray: 22 78;
+        }
+
+        .loader__mark {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            animation: loader-breathe 2.4s ease-in-out infinite;
+        }
+
+        .loader__line,
+        .loader__head {
+            fill: none;
+            stroke: #000000;
+            stroke-width: 3.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 1;
+            stroke-dashoffset: 1;
+        }
+
+        .loader__line {
+            animation: loader-draw-line 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+        }
+
+        .loader__head {
+            animation: loader-draw-head 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+        }
+
+        .loader__name {
+            font-family: 'Ubuntu', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.85);
+            opacity: 0;
+            animation: loader-rise 0.9s 0.3s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+        }
+
+        .loader__name span {
+            color: #34E834;
+        }
+
+        .loader__bar {
+            position: relative;
+            width: 140px;
+            height: 2px;
+            border-radius: 2px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.08);
+            opacity: 0;
+            animation: loader-rise 0.9s 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+        }
+
+        .loader__bar span {
+            position: absolute;
+            inset: 0;
+            width: 40%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, rgba(52, 232, 52, 0), #34E834, rgba(52, 232, 52, 0));
+            animation: loader-sweep 1.6s ease-in-out infinite;
+        }
+
+        @keyframes loader-spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes loader-breathe {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(52, 232, 52, 0); transform: scale(1); }
+            50% { box-shadow: 0 0 32px 2px rgba(52, 232, 52, 0.35); transform: scale(1.03); }
+        }
+
+        /* line draws, arrowhead follows, both hold, then fade out before the next cycle */
+        @keyframes loader-draw-line {
+            0% { stroke-dashoffset: 1; opacity: 1; }
+            40% { stroke-dashoffset: 0; opacity: 1; }
+            80% { stroke-dashoffset: 0; opacity: 1; }
+            95%, 100% { stroke-dashoffset: 0; opacity: 0; }
+        }
+
+        @keyframes loader-draw-head {
+            0%, 32% { stroke-dashoffset: 1; opacity: 1; }
+            52% { stroke-dashoffset: 0; opacity: 1; }
+            80% { stroke-dashoffset: 0; opacity: 1; }
+            95%, 100% { stroke-dashoffset: 0; opacity: 0; }
+        }
+
+        @keyframes loader-rise {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes loader-sweep {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(250%); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .loader__orbit,
+            .loader__mark,
+            .loader__bar span {
+                animation: none;
+            }
+
+            .loader__line,
+            .loader__head {
+                animation: none;
+                stroke-dashoffset: 0;
+            }
         }
     </style>
   <!-- Smartsupp Live Chat script -->
@@ -514,7 +671,7 @@ window.smartsupp||(function(d) {
 <script src="assets/plugins/owlcarousel/owl.carousel.min.js"></script>
 <script src="assets/plugins/slick/slick.min.js"></script>
 <script type="text/javascript" src="assets/js/typed.min.js"></script>
-<script src="assets/js/customc4cac4ca.js?1"></script>
+<script src="assets/js/customc4cac4ca.js?2"></script>
 
 
 <script type="text/javascript">

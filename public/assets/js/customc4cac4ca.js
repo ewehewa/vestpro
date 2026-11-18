@@ -1,11 +1,13 @@
 // =================== preloader js  ================== //
 window.addEventListener('load', function () {
     var preloader = document.querySelector('.preloader');
-    preloader.style.transition = 'opacity .5s ease';
+    if (!preloader) return;
+    preloader.classList.add('is-leaving');
+    preloader.style.transition = 'opacity .6s ease';
     preloader.style.opacity = '0';
     setTimeout(function () {
         preloader.style.display = 'none';
-    }, 1500);
+    }, 700);
 });
 
 // =================== preloader js end ================== //
