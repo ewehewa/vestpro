@@ -13,6 +13,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         require_once app_path('Helpers/CurrencyHelper.php');
+        require_once app_path('Helpers/MbstringFallback.php');
 
         $this->app->singleton(CurrencyService::class);
     }
