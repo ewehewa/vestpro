@@ -31,8 +31,8 @@ class BalanceAlertsWiringTest extends TestCase
 
     private function assertOneAlert(string $type, string $category, float $balanceAfter): void
     {
-        Mail::assertQueuedCount(1);
-        Mail::assertQueued(AccountTransactionMail::class, fn ($m) => $m->hasTo($this->user->email)
+        Mail::assertSentCount(1);
+        Mail::assertSent(AccountTransactionMail::class, fn ($m) => $m->hasTo($this->user->email)
             && $m->transaction->type === $type
             && $m->transaction->category === $category
             && $m->transaction->balance_after === $balanceAfter);
@@ -78,7 +78,7 @@ class BalanceAlertsWiringTest extends TestCase
             ->assertStatus(400);
 
         $this->assertSame(1000.0, (float) $this->user->fresh()->balance);
-        Mail::assertNothingQueued();
+        Mail::assertNothingSent();
     }
 
     public function test_admin_balance_credit_alerts(): void
@@ -96,8 +96,8 @@ class BalanceAlertsWiringTest extends TestCase
         $this->actingAs($this->admin, 'admin')->postJson("/admin/users/{$this->user->id}/bonus", ['amount' => 10])->assertOk();
 
         $this->assertSame(1050.0, (float) $this->user->fresh()->balance);
-        Mail::assertQueuedCount(2);
-        Mail::assertQueued(AccountTransactionMail::class, fn ($m) => $m->transaction->category === 'profit' && $m->transaction->balance_after === 1040.0);
-        Mail::assertQueued(AccountTransactionMail::class, fn ($m) => $m->transaction->category === 'bonus' && $m->transaction->balance_after === 1050.0);
+        Mail::assertSentCount(2);
+        Mail::assertSent(AccountTransactionMail::class, fn ($m) => $m->transaction->category === 'profit' && $m->transaction->balance_after === 1040.0);
+        Mail::assertSent(AccountTransactionMail::class, fn ($m) => $m->transaction->category === 'bonus' && $m->transaction->balance_after === 1050.0);
     }
 }

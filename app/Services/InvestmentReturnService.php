@@ -167,9 +167,10 @@ class InvestmentReturnService
 
             $total = round(array_sum(array_column($items, 'amount')), 2);
 
-            Mail::to($user->email)->queue(new DailyReturnsMail($user, $items, $total, (float) $user->balance));
+            // Sent directly from the payout run (no queue worker needed on shared hosting)
+            Mail::to($user->email)->send(new DailyReturnsMail($user, $items, $total, (float) $user->balance));
         } catch (\Throwable $e) {
-            Log::warning('Failed to queue daily returns email', ['user_id' => $userId, 'message' => $e->getMessage()]);
+            Log::warning('Failed to send daily returns email', ['user_id' => $userId, 'message' => $e->getMessage()]);
         }
     }
 }

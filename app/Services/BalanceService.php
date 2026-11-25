@@ -16,7 +16,7 @@ use InvalidArgumentException;
  * The only place a user's balance should change.
  *
  * Every credit/debit locks the user's row, updates the balance, writes a ledger row
- * to `transactions`, and (unless told not to) queues a credit/debit alert email.
+ * to `transactions`, and (unless told not to) sends a credit/debit alert email.
  * The email is sent only after the database transaction commits, so a mail failure
  * can never undo or block a balance change.
  */
@@ -82,13 +82,17 @@ class BalanceService
         });
     }
 
+    /**
+     * Sent immediately (not queued): shared hosting can't reliably run a queue worker.
+     * This runs after the balance change is committed, so a mail failure only gets logged.
+     */
     private function sendAlert(Transaction $transaction): void
     {
         try {
             $transaction->loadMissing('user');
-            Mail::to($transaction->user->email)->queue(new AccountTransactionMail($transaction));
+            Mail::to($transaction->user->email)->send(new AccountTransactionMail($transaction));
         } catch (\Throwable $e) {
-            Log::warning('Failed to queue transaction alert email', [
+            Log::warning('Failed to send transaction alert email', [
                 'transaction_id' => $transaction->id,
                 'message' => $e->getMessage(),
             ]);

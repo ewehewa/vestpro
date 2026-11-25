@@ -60,7 +60,7 @@ class InvestmentReturnsTest extends TestCase
         $this->assertSame(10.0, $investment->daily_return);
         $this->assertSame(3, $investment->duration_days);
 
-        Mail::assertQueued(AccountTransactionMail::class, fn ($m) => $m->transaction->category === 'investment'
+        Mail::assertSent(AccountTransactionMail::class, fn ($m) => $m->transaction->category === 'investment'
             && $m->transaction->balance_after === 500.0);
     }
 
@@ -70,7 +70,7 @@ class InvestmentReturnsTest extends TestCase
         $stats = $this->runPayouts();
 
         $this->assertSame(0, $stats['payouts']);
-        Mail::assertNotQueued(DailyReturnsMail::class);
+        Mail::assertNotSent(DailyReturnsMail::class);
     }
 
     public function test_daily_return_is_paid_once_per_day_with_one_summary_email(): void
@@ -83,14 +83,14 @@ class InvestmentReturnsTest extends TestCase
         $this->assertSame(1, $stats['payouts']);
         $this->assertSame(510.0, (float) $this->user->fresh()->balance);
         $this->assertSame(1, $investment->fresh()->days_paid);
-        Mail::assertQueued(DailyReturnsMail::class, fn ($m) => $m->total === 10.0 && $m->balance === 510.0);
+        Mail::assertSent(DailyReturnsMail::class, fn ($m) => $m->total === 10.0 && $m->balance === 510.0);
 
         // Running again the same day pays nothing more
         $again = $this->runPayouts();
         $this->assertSame(0, $again['payouts']);
         $this->assertSame(510.0, (float) $this->user->fresh()->balance);
         $this->assertSame(1, InvestmentPayout::count());
-        Mail::assertQueuedCount(2); // the investment debit alert + one returns email
+        Mail::assertSentCount(2); // the investment debit alert + one returns email
     }
 
     public function test_missed_days_are_caught_up_and_capital_is_returned_on_completion(): void
@@ -109,7 +109,7 @@ class InvestmentReturnsTest extends TestCase
         // 500 left after investing + 3 x 10 returns + 500 capital
         $this->assertSame(1030.0, (float) $this->user->fresh()->balance);
 
-        Mail::assertQueued(DailyReturnsMail::class, fn ($m) => count($m->items) === 4 && $m->total === 530.0 && $m->balance === 1030.0);
+        Mail::assertSent(DailyReturnsMail::class, fn ($m) => count($m->items) === 4 && $m->total === 530.0 && $m->balance === 1030.0);
 
         // Completed investments are never paid again
         $this->travelTo(Carbon::parse('2026-01-20 00:05:00', 'UTC'));
@@ -127,7 +127,7 @@ class InvestmentReturnsTest extends TestCase
 
         $this->assertSame(2, $stats['payouts']);
         $this->assertSame(1, $stats['users']);
-        Mail::assertQueued(DailyReturnsMail::class, 1);
+        Mail::assertSent(DailyReturnsMail::class, 1);
     }
 
     public function test_daily_returns_email_shows_each_line_and_available_balance(): void

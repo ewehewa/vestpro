@@ -21,7 +21,7 @@ class BalanceServiceTest extends TestCase
         return User::factory()->create(['username' => 'user' . uniqid(), 'balance' => $balance]);
     }
 
-    public function test_credit_updates_balance_writes_ledger_and_queues_alert(): void
+    public function test_credit_updates_balance_writes_ledger_and_sends_alert(): void
     {
         Mail::fake();
         $user = $this->user(100);
@@ -34,8 +34,8 @@ class BalanceServiceTest extends TestCase
         $this->assertSame(150.25, $tx->balance_after);
         $this->assertSame(Transaction::CREDIT, $tx->type);
 
-        Mail::assertQueued(AccountTransactionMail::class, fn ($mail) => $mail->hasTo($user->email) && $mail->transaction->is($tx));
-        Mail::assertQueuedCount(1);
+        Mail::assertSent(AccountTransactionMail::class, fn ($mail) => $mail->hasTo($user->email) && $mail->transaction->is($tx));
+        Mail::assertSentCount(1);
     }
 
     public function test_debit_with_insufficient_balance_changes_nothing(): void
@@ -51,7 +51,7 @@ class BalanceServiceTest extends TestCase
 
         $this->assertSame(20.0, (float) $user->fresh()->balance);
         $this->assertSame(0, Transaction::count());
-        Mail::assertNothingQueued();
+        Mail::assertNothingSent();
     }
 
     public function test_no_alert_is_sent_when_the_surrounding_transaction_rolls_back(): void
@@ -69,7 +69,7 @@ class BalanceServiceTest extends TestCase
 
         $this->assertSame(100.0, (float) $user->fresh()->balance);
         $this->assertSame(0, Transaction::count());
-        Mail::assertNothingQueued();
+        Mail::assertNothingSent();
     }
 
     public function test_alert_email_shows_amount_and_available_balance(): void
