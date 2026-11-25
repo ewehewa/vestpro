@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\InsufficientBalanceException;
 use App\Models\Nft;
+use App\Services\BalanceService;
 use App\Services\CloudinaryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -185,28 +187,29 @@ class UserNftController extends Controller
             ], 402);
         }
 
-        DB::beginTransaction();
-
         try {
-            // 4️⃣ Deduct from buyer
-            $user->decrement('balance', $priceUsd);
+            DB::transaction(function () use ($user, $nft, $priceUsd) {
+                $balance = app(BalanceService::class);
+                $nftName = $nft->name ?? "NFT #{$nft->id}";
 
-            // 5️⃣ Credit seller if seller is a User (not Admin)
-            if ($nft->owner_type === 'App\\Models\\User') {
-                $seller = app($nft->owner_type)::find($nft->owner_id);
-                if ($seller) {
-                    $seller->increment('balance', $priceUsd);
+                // 4️⃣ Deduct from buyer (sends the buyer a debit alert email)
+                $balance->debit($user, $priceUsd, 'nft_purchase', "NFT purchase: {$nftName}", $nft);
+
+                // 5️⃣ Credit seller if seller is a User (not Admin) (sends the seller a credit alert email)
+                if ($nft->owner_type === 'App\\Models\\User') {
+                    $seller = app($nft->owner_type)::find($nft->owner_id);
+                    if ($seller) {
+                        $balance->credit($seller, $priceUsd, 'nft_sale', "NFT sold: {$nftName}", $nft);
+                    }
                 }
-            }
 
-            // 6️⃣ Transfer ownership
-            $nft->update([
-                'owner_type' => get_class($user),
-                'owner_id' => $user->id,
-                'on_sale' => false,
-            ]);
-
-            DB::commit();
+                // 6️⃣ Transfer ownership
+                $nft->update([
+                    'owner_type' => get_class($user),
+                    'owner_id' => $user->id,
+                    'on_sale' => false,
+                ]);
+            });
 
             return response()->json([
                 'success' => true,
@@ -218,8 +221,14 @@ class UserNftController extends Controller
                 ]
             ]);
 
+        } catch (InsufficientBalanceException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Insufficient balance. Please top up your wallet.',
+                'price_usd' => round($priceUsd, 2),
+                'user_balance' => round($user->fresh()->balance, 2)
+            ], 402);
         } catch (\Exception $e) {
-            DB::rollBack();
             return response()->json([
                 'success' => false,
                 'message' => 'Transaction failed.',

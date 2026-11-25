@@ -2,26 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\InsufficientBalanceException;
 use App\Http\Controllers\Controller;
 use App\Mail\AdminToUserMail;
-use App\Mail\BalanceCreditedMail;
-use App\Mail\DepositApprovedMail;
 use App\Mail\OtpGeneratedMail;
-use App\Mail\ProfitToppedUpMail;
 use App\Models\Deposit;
 use App\Models\Investment;
 use App\Models\Profit;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Models\Withdrawal;
+use App\Services\BalanceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class DashboardController extends Controller
 {
+    public function __construct(private BalanceService $balance)
+    {
+    }
+
     public function index()
     {
          $admin = Auth::guard('admin')->user();
@@ -86,18 +88,31 @@ class DashboardController extends Controller
 
     public function approveDeposit($id)
     {
-        $deposit = Deposit::findOrFail($id);
+        $approved = DB::transaction(function () use ($id) {
+            // Lock the row so a double click can't credit twice
+            $deposit = Deposit::lockForUpdate()->findOrFail($id);
 
-        if ($deposit->status !== 'pending') {
-            return back()->with('error', 'Deposit already approved.');
+            if ($deposit->status !== 'pending') {
+                return false;
+            }
+
+            // Approve deposit and credit the user; this also sends the credit alert email
+            $deposit->update(['status' => 'approved']);
+
+            $this->balance->credit(
+                $deposit->user,
+                (float) $deposit->amount,
+                'deposit',
+                "Deposit approved ({$deposit->payment_mode})",
+                $deposit,
+            );
+
+            return true;
+        });
+
+        if (! $approved) {
+            return response()->json(['success' => false, 'message' => 'Deposit already processed.'], 400);
         }
-
-        // Approve deposit and update user balance
-        $deposit->update(['status' => 'approved']);
-        $deposit->user->increment('balance', $deposit->amount);
-
-        // Send deposit approved email
-        Mail::to($deposit->user->email)->send(new DepositApprovedMail($deposit));
 
         return response()->json(['success' => true, 'message' => 'Deposit approved successfully!']);
     }
@@ -142,20 +157,17 @@ class DashboardController extends Controller
             'amount' => 'required|numeric|min:1',
         ]);
 
-        $amount = $request->amount;
+        $amount = (float) $request->amount;
 
-        Profit::create([
-            'user_id' => $user->id,
-            'amount' => $amount,
-        ]);
+        DB::transaction(function () use ($user, $amount) {
+            $profit = Profit::create([
+                'user_id' => $user->id,
+                'amount' => $amount,
+            ]);
 
-        $user->increment('balance', $amount);
-
-        try {
-            Mail::to($user->email)->send(new ProfitToppedUpMail($user, $amount));
-        } catch (\Throwable $e) {
-            Log::warning('Failed to send profit topup email: ' . $e->getMessage(), ['user_id' => $user->id]);
-        }
+            // Credit balance; this also sends the credit alert email
+            $this->balance->credit($user, $amount, 'profit', 'Profit credited to your account', $profit);
+        });
 
         return response()->json([
             'success' => true,
@@ -182,14 +194,23 @@ class DashboardController extends Controller
             ], 400);
         }
 
-        // Record the debit as a negative profit entry
-        Profit::create([
-            'user_id' => $user->id,
-            'amount' => -$amount,
-        ]);
+        try {
+            DB::transaction(function () use ($user, $amount) {
+                // Record the debit as a negative profit entry
+                $profit = Profit::create([
+                    'user_id' => $user->id,
+                    'amount' => -$amount,
+                ]);
 
-        // Also reduce the user’s overall balance
-        $user->decrement('balance', $amount);
+                // Also reduce the user's overall balance; this sends the debit alert email
+                $this->balance->debit($user, (float) $amount, 'profit_debit', 'Profit reversed by administrator', $profit);
+            });
+        } catch (InsufficientBalanceException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User has insufficient balance.',
+            ], 400);
+        }
 
         return response()->json([
             'success' => true,
@@ -262,12 +283,12 @@ class DashboardController extends Controller
             'amount' => 'required|numeric|min:0.01'
         ]);
 
-        if ($user->balance < $request->amount) {
+        try {
+            // This also sends the debit alert email
+            $this->balance->debit($user, (float) $request->amount, 'admin_debit', 'Account debited by administrator');
+        } catch (InsufficientBalanceException $e) {
             return response()->json(['success' => false, 'message' => 'User has insufficient balance.'], 400);
         }
-
-        $user->balance -= $request->amount;
-        $user->save();
 
         return response()->json([
             'success' => true,
@@ -283,35 +304,17 @@ class DashboardController extends Controller
             'amount' => 'required|numeric|min:0.01',
         ]);
 
-        DB::beginTransaction();
-
         try {
-            $amount = $request->amount;
-            $type = $request->type;
+            $amount = (float) $request->amount;
 
-            if ($type === 'debit') {
-                // Check sufficient balance
-                if ($user->balance < $amount) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'User has insufficient balance.'
-                    ], 400);
-                }
-
-                $user->decrement('balance', $amount);
+            // Both branches send a credit/debit alert email
+            if ($request->type === 'debit') {
+                $this->balance->debit($user, $amount, 'admin_debit', 'Account debited by administrator');
                 $message = 'User balance debited successfully.';
             } else {
-                $user->increment('balance', $amount);
+                $this->balance->credit($user, $amount, 'admin_credit', 'Account credited by administrator');
                 $message = 'User balance added successfully.';
-
-                try {
-                    Mail::to($user->email)->send(new BalanceCreditedMail($user, $amount));
-                } catch (\Throwable $e) {
-                    Log::warning('Failed to send balance credited email: ' . $e->getMessage(), ['user_id' => $user->id]);
-                }
             }
-
-            DB::commit();
 
             return response()->json([
                 'success' => true,
@@ -319,9 +322,12 @@ class DashboardController extends Controller
                 'new_balance' => $user->balance,
             ]);
 
+        } catch (InsufficientBalanceException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User has insufficient balance.'
+            ], 400);
         } catch (\Exception $e) {
-            DB::rollBack();
-
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to update user balance. Please try again later.',

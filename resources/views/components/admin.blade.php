@@ -102,6 +102,10 @@
                 <i class="fas fa-envelope"></i>
                 <span class="menu-item-text">Send Email</span>
             </a>
+            <a href="{{ route('admin.settings.returns') }}" class="menu-item">
+                <i class="fas fa-clock"></i>
+                <span class="menu-item-text">Settings: Investment Returns</span>
+            </a>
             {{-- TODO: Copy Trading (traders), NFTs and Signals hidden for now; uncomment to bring them back.
              <a href="{{ route('admin.traders.create') }}" class="menu-item">
                 <i class="fas fa-user-tie"></i>

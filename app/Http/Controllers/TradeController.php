@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\InsufficientBalanceException;
+use App\Services\BalanceService;
 use Illuminate\Http\Request;
 use App\Models\Trade;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class TradeController extends Controller
@@ -40,23 +43,36 @@ class TradeController extends Controller
             return back()->withErrors(['amount' => 'Insufficient balance to place this trade']);
         }
 
-        // Deduct amount first
-        $user->balance -= $request->amount;
-        $user->save();
+        try {
+            $trade = DB::transaction(function () use ($user, $request) {
+                // Create trade record
+                $trade = Trade::create([
+                    'user_id' => $user->id,
+                    'asset_type' => $request->asset_type,
+                    'asset_name' => $request->asset_name,
+                    'trade_type' => $request->trade_type,
+                    'amount' => $request->amount,
+                    'leverage' => $request->leverage,
+                    'duration' => $request->duration,
+                    'take_profit' => $request->take_profit ?? 0,
+                    'stop_loss' => $request->stop_loss ?? 0,
+                    'expires_at' => now()->addMinutes((int)$request->duration),
+                ]);
 
-        // Create trade record
-        $trade = Trade::create([
-            'user_id' => $user->id,
-            'asset_type' => $request->asset_type,
-            'asset_name' => $request->asset_name,
-            'trade_type' => $request->trade_type,
-            'amount' => $request->amount,
-            'leverage' => $request->leverage,
-            'duration' => $request->duration,
-            'take_profit' => $request->take_profit ?? 0,
-            'stop_loss' => $request->stop_loss ?? 0,
-            'expires_at' => now()->addMinutes((int)$request->duration),
-        ]);
+                // Deduct the stake; this also sends the debit alert email
+                app(BalanceService::class)->debit(
+                    $user,
+                    (float) $request->amount,
+                    'trade',
+                    ucfirst($request->trade_type) . " trade: {$request->asset_name} ({$request->leverage})",
+                    $trade,
+                );
+
+                return $trade;
+            });
+        } catch (InsufficientBalanceException $e) {
+            return back()->withErrors(['amount' => 'Insufficient balance to place this trade']);
+        }
 
         // Notify admin
         Mail::raw("User {$user->username} placed a new trade ({$trade->trade_type} {$trade->asset_name}) that expires at {$trade->expires_at}.", function ($message) {

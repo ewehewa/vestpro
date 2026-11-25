@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\InsufficientBalanceException;
 use App\Models\Signal;
 use App\Models\UserSignal;
+use App\Services\BalanceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserSignalController extends Controller
 {
@@ -28,17 +31,31 @@ class UserSignalController extends Controller
             ]);
         }
 
-        // Deduct balance
-        $user->balance -= $signal->price;
-        $user->save();
+        try {
+            DB::transaction(function () use ($user, $signal) {
+                // Save subscription
+                $subscription = UserSignal::create([
+                    'user_id' => $user->id,
+                    'signal_id' => $signal->id,
+                    'status' => 'active',
+                    'expires_at' => now()->addWeeks($signal->duration ?? 1)
+                ]);
 
-        // Save subscription
-        $subscription = UserSignal::create([
-            'user_id' => $user->id,
-            'signal_id' => $signal->id,
-            'status' => 'active',
-            'expires_at' => now()->addWeeks($signal->duration ?? 1)
-        ]);
+                // Deduct balance; this also sends the debit alert email
+                app(BalanceService::class)->debit(
+                    $user,
+                    (float) $signal->price,
+                    'signal_subscription',
+                    "Signal subscription: {$signal->name}",
+                    $subscription,
+                );
+            });
+        } catch (InsufficientBalanceException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Insufficient balance.'
+            ]);
+        }
 
         return response()->json([
             'success' => true,

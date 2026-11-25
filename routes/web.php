@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\BonusController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ImpersonationController;
 use App\Http\Controllers\Admin\InvestmentPlanController;
+use App\Http\Controllers\Admin\ReturnSettingsController;
 use App\Http\Controllers\Admin\TraderController;
 use App\Http\Controllers\CopiedTraderController;
 use App\Http\Controllers\NewsController;
@@ -185,6 +186,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::post('/users/{user}/impersonate', [ImpersonationController::class, 'impersonate'])->name('users.impersonate');
         Route::post('/admin/impersonate/leave', [ImpersonationController::class, 'leave'])->name('impersonate.leave');
+
+        // Settings: daily investment returns schedule
+        Route::get('/settings/returns', [ReturnSettingsController::class, 'edit'])->name('settings.returns');
+        Route::post('/settings/returns', [ReturnSettingsController::class, 'update'])->name('settings.returns.update');
+        Route::post('/settings/returns/run', [ReturnSettingsController::class, 'runNow'])->name('settings.returns.run');
 
         Route::post('/users/{user}/bonus', [BonusController::class, 'store']);
         Route::delete('/users/{user}/bonus', [BonusController::class, 'destroy']);

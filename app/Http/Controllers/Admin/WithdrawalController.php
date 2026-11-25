@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Mail\WithdrawalApprovedMail;
-use App\Mail\WithdrawalDeclinedMail;
 use App\Models\Withdrawal;
+use App\Services\BalanceService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,24 +57,30 @@ class WithdrawalController extends Controller
     public function declineWithdrawal($id)
     {
         try {
-            $withdrawal = Withdrawal::findOrFail($id);
-            if ($withdrawal->status !== 'pending') {
+            $declined = DB::transaction(function () use ($id) {
+                // Lock the row so a double click can't refund twice
+                $withdrawal = Withdrawal::lockForUpdate()->findOrFail($id);
+                if ($withdrawal->status !== 'pending') {
+                    return false;
+                }
+
+                $withdrawal->status = 'declined';
+                $withdrawal->save();
+
+                // Return the amount; the credit alert email tells the user the withdrawal was declined
+                app(BalanceService::class)->credit(
+                    $withdrawal->user,
+                    (float) $withdrawal->amount,
+                    'withdrawal_refund',
+                    "Withdrawal declined: amount returned to your balance",
+                    $withdrawal,
+                );
+
+                return true;
+            });
+
+            if (! $declined) {
                 return response()->json(['success' => false, 'message' => 'Withdrawal already processed.']);
-            }
-
-            $user = $withdrawal->user;
-
-            // Reverse the amount
-            $user->balance += $withdrawal->amount;
-            $user->save();
-
-            $withdrawal->status = 'declined';
-            $withdrawal->save();
-
-            try {
-                Mail::to($user->email)->send(new WithdrawalDeclinedMail($withdrawal));
-            } catch (\Throwable $e) {
-                Log::warning('Failed to send withdrawal declined email: ' . $e->getMessage(), ['withdrawal_id' => $id]);
             }
 
             return response()->json(['success' => true, 'message' => 'Withdrawal declined successfully.']);

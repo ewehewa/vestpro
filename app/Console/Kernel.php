@@ -5,6 +5,10 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
+/**
+ * NOT USED: Laravel 12 does not load this class (bootstrap/app.php configures the app),
+ * so the schedule below never runs. The live schedule is in routes/console.php.
+ */
 class Kernel extends ConsoleKernel
 {
     /**

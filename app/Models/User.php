@@ -63,6 +63,11 @@ class User extends Authenticatable
         return $this->morphMany(Nft::class, 'owner');
     }
     
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
     public function trades()
     {
         return $this->hasMany(Trade::class);

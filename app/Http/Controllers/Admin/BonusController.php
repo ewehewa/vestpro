@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\InsufficientBalanceException;
 use App\Http\Controllers\Controller;
-use App\Mail\BonusAddedMail;
 use App\Models\User;
+use App\Services\BalanceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class BonusController extends Controller
 {
@@ -22,17 +21,11 @@ class BonusController extends Controller
 
         DB::transaction(function () use ($user, $amount) {
             // record the bonus
-            $user->bonuses()->create(['amount' => $amount]);
+            $bonus = $user->bonuses()->create(['amount' => $amount]);
 
-            // increment balance
-            $user->increment('balance', $amount);
+            // credit balance; this also sends the credit alert email
+            app(BalanceService::class)->credit($user, $amount, 'bonus', 'Bonus credited to your account', $bonus);
         });
-
-        try {
-            Mail::to($user->email)->send(new BonusAddedMail($user, $amount));
-        } catch (\Throwable $e) {
-            Log::warning('Failed to send bonus added email: ' . $e->getMessage(), ['user_id' => $user->id]);
-        }
 
         return response()->json([
             'status' => 'success',
@@ -61,14 +54,22 @@ class BonusController extends Controller
             ], 422);
         }
 
-        DB::transaction(function () use ($user, $amount) {
-            // Record a negative bonus entry (debit)
-            $user->bonuses()->create([
-                'amount' => -$amount
-            ]);
+        try {
+            DB::transaction(function () use ($user, $amount) {
+                // Record a negative bonus entry (debit)
+                $bonus = $user->bonuses()->create([
+                    'amount' => -$amount
+                ]);
 
-            $user->decrement('balance', $amount); // <-- you need this line
-        });
+                // debit balance; this also sends the debit alert email
+                app(BalanceService::class)->debit($user, $amount, 'bonus_reversal', 'Bonus removed by administrator', $bonus);
+            });
+        } catch (InsufficientBalanceException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User does not have enough balance to remove this bonus',
+            ], 422);
+        }
 
         return response()->json([
             'status' => 'success',

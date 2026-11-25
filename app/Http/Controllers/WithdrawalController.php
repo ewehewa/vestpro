@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\InsufficientBalanceException;
 use App\Models\Withdrawal;
+use App\Services\BalanceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -41,33 +43,40 @@ public function submitWithdrawal(Request $request)
         ], 422);
     }
 
-    DB::beginTransaction();
-
     try {
-        // Clear OTP
-        $user->otp = null;
+        DB::transaction(function () use ($user, $request) {
+            // Clear OTP
+            $user->otp = null;
+            $user->save();
 
-        // Deduct amount from balance
-        $user->balance -= $request->amount;
-        $user->save();
+            // Create withdrawal
+            $withdrawal = Withdrawal::create([
+                'user_id' => $user->id,
+                'amount' => $request->amount,
+                'receiving_mode' => $request->method,
+                'address' => $request->address,
+            ]);
 
-        // Create withdrawal
-        Withdrawal::create([
-            'user_id' => $user->id,
-            'amount' => $request->amount,
-            'receiving_mode' => $request->method,
-            'address' => $request->address,
-        ]);
-
-        DB::commit();
+            // Deduct amount from balance; this also sends the debit alert email
+            app(BalanceService::class)->debit(
+                $user,
+                (float) $request->amount,
+                'withdrawal',
+                "Withdrawal request via {$request->method} (pending approval)",
+                $withdrawal,
+            );
+        });
 
         return response()->json([
             'success' => true,
             'message' => 'Withdrawal request submitted successfully.'
         ]);
+    } catch (InsufficientBalanceException $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Insufficient balance.'
+        ], 422);
     } catch (\Exception $e) {
-        DB::rollBack();
-
         return response()->json([
             'success' => false,
             'message' => 'Failed to submit withdrawal request. Try again later.'
