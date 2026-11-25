@@ -8,8 +8,8 @@
 
   <div style="max-width: 600px; margin: 30px auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);">
     <div style="text-align: center; margin-bottom: 24px;">
-      <img src="{{ isset($message) ? $message->embed(public_path('assets/img/logo-icon.png')) : asset('assets/img/logo-icon.png') }}" width="40" height="40" alt="" style="display: inline-block; vertical-align: middle; border: 0;">
-      <span style="display: inline-block; vertical-align: middle; margin-left: 8px; font-size: 20px; font-weight: bold; color: #000000;">Strategic Investment <span style="color: #22B822;">Pro</span></span>
+      <img src="{{ isset($message) && is_file(public_path('assets/img/logo-icon.png')) ? $message->embed(public_path('assets/img/logo-icon.png')) : asset('assets/img/logo-icon.png') }}" width="40" height="40" alt="" style="display: inline-block; vertical-align: middle; border: 0;">
+      <span style="display: inline-block; vertical-align: middle; margin-left: 8px; text-align: left; font-family: Montserrat, Arial, Helvetica, sans-serif; line-height: 1;"><span style="display: block; color: #1FAF1F; font-size: 22px; font-weight: 800; letter-spacing: 0.5px;">STRATEGIC</span><span style="display: block; color: #A8841F; font-size: 10px; font-weight: 600; letter-spacing: 3px; padding-top: 4px;">INVEST PRO</span></span>
     </div>
     
     <h2 style="color: #333333; font-weight: 600; margin-bottom: 20px;">Hi there,</h2>

@@ -1,19 +1,22 @@
 <x-app>
     <!-- ===============>> Preloader start here <<================= -->
-    <div class="preloader" role="status" aria-label="Loading Strategic Investment Pro">
+    <div class="preloader" role="status" aria-label="Loading Strategic Invest Pro">
         <div class="loader">
             <div class="loader__emblem">
                 <svg class="loader__orbit" viewBox="0 0 100 100" aria-hidden="true">
                     <circle class="loader__orbit-track" cx="50" cy="50" r="46" />
                     <circle class="loader__orbit-arc" cx="50" cy="50" r="46" pathLength="100" />
                 </svg>
-                <svg class="loader__mark" viewBox="0 0 40 40" aria-hidden="true">
-                    <rect width="40" height="40" rx="10" fill="#34E834" />
-                    <path class="loader__line" d="M9 29l8-8 5 4 10-12" pathLength="1" />
-                    <path class="loader__head" d="M24.5 13H32v7.5" pathLength="1" />
+                <svg class="loader__mark" viewBox="0 0 48 48" aria-hidden="true">
+                    <rect class="loader__col" x="8" y="26" width="6" height="14" rx="0.8" />
+                    <rect class="loader__col" x="16" y="20" width="6" height="20" rx="0.8" />
+                    <rect class="loader__col" x="24" y="14" width="6" height="26" rx="0.8" />
+                    <rect class="loader__col" x="32" y="8" width="6" height="32" rx="0.8" />
+                    <path class="loader__swoosh" d="M2.5 39.5C15 47.5 33 44.5 42.2 31L39.8 29C31.5 40.5 15.5 44 2.5 39.5Z" />
+                    <path class="loader__arrow" d="M45 25.5L44.6 32.6L38.6 28.2Z" />
                 </svg>
             </div>
-            <div class="loader__name">Strategic Investment <span>Pro</span></div>
+            <div class="loader__name"><strong>STRATEGIC</strong><span>INVEST PRO</span></div>
             <div class="loader__bar"><span></span></div>
         </div>
     </div>

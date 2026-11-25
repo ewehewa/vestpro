@@ -20,6 +20,7 @@ class ReturnSettingsController extends Controller
     {
         $timezone = $this->settings->timezone();
         $todayStart = $this->settings->now()->startOfDay()->utc();
+        $schedulerLastSeen = $this->settings->schedulerLastSeen();
 
         return view('dashboard.admin.return_settings', [
             'enabled' => $this->settings->enabled(),
@@ -27,7 +28,9 @@ class ReturnSettingsController extends Controller
             'timezone' => $timezone,
             'timezones' => \DateTimeZone::listIdentifiers(),
             'lastRun' => $this->settings->lastRun(),
-            'schedulerLastSeen' => $this->settings->schedulerLastSeen(),
+            'schedulerLastSeen' => $schedulerLastSeen,
+            // The scheduler checks in every minute; allow a little slack before warning
+            'cronRunning' => $schedulerLastSeen && $schedulerLastSeen->gt(now()->subMinutes(3)),
             'nextRun' => $this->nextRun(),
             'activeCount' => Investment::active()->count(),
             'paidTodayCount' => InvestmentPayout::where('created_at', '>=', $todayStart)->count(),

@@ -67,7 +67,11 @@
 
   <div class="container">
     <div class="header">
-      <img src="{{ isset($message) ? $message->embed(public_path('assets/img/logo-icon.png')) : asset('assets/img/logo-icon.png') }}" width="48" height="48" alt="" style="display:block;margin:0 auto 12px;border:0;">
+      <img src="{{ isset($message) && is_file(public_path('assets/img/logo-icon.png')) ? $message->embed(public_path('assets/img/logo-icon.png')) : asset('assets/img/logo-icon.png') }}" width="48" height="48" alt="" style="display:block;margin:0 auto 12px;border:0;">
+      <div style="font-family:Montserrat,Arial,Helvetica,sans-serif;line-height:1;margin-bottom:18px;">
+        <div style="color:#34E834;font-size:26px;font-weight:800;letter-spacing:0.5px;">STRATEGIC</div>
+        <div style="color:#E8D27C;font-size:11px;font-weight:600;letter-spacing:4px;padding-top:5px;">INVEST PRO</div>
+      </div>
       <h1>Welcome to Strategic Investment Pro</h1>
     </div>
 

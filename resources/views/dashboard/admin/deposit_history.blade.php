@@ -198,7 +198,14 @@
 
   <div class="container-fluid">
     <div class="card-box">
-      <h4 class="mb-4">All Deposit History</h4>
+      @if (!empty($status))
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
+          <h4 class="mb-0">{{ ucfirst($status) }} Deposits</h4>
+          <a href="{{ route('admin.deposits.all') }}" class="btn btn-sm btn-outline-secondary">Show all deposits</a>
+        </div>
+      @else
+        <h4 class="mb-4">All Deposit History</h4>
+      @endif
 
       @if($deposits->count())
         <div class="table-responsive">

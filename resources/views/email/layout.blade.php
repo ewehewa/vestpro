@@ -13,8 +13,8 @@
             <td align="center" style="padding:20px;">
               <table cellpadding="0" cellspacing="0" role="presentation">
                 <tr>
-                  <td style="padding-right:10px;"><img src="{{ isset($message) ? $message->embed(public_path('assets/img/logo-icon.png')) : asset('assets/img/logo-icon.png') }}" width="36" height="36" alt="" style="display:block;border:0;"></td>
-                  <td style="color:#ffffff;font-size:20px;font-weight:bold;font-family:Arial,sans-serif;">Strategic Investment <span style="color:#34E834;">Pro</span></td>
+                  <td style="padding-right:10px;"><img src="{{ isset($message) && is_file(public_path('assets/img/logo-icon.png')) ? $message->embed(public_path('assets/img/logo-icon.png')) : asset('assets/img/logo-icon.png') }}" width="36" height="36" alt="" style="display:block;border:0;"></td>
+                  <td style="font-family:Montserrat,Arial,Helvetica,sans-serif;line-height:1;"><div style="color:#34E834;font-size:22px;font-weight:800;letter-spacing:0.5px;">STRATEGIC</div><div style="color:#E8D27C;font-size:10px;font-weight:600;letter-spacing:3px;padding-top:4px;">INVEST PRO</div></td>
                 </tr>
               </table>
             </td>

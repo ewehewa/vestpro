@@ -165,7 +165,14 @@
 
   <div class="container-fluid">
     <div class="card-box">
-      <h4 class="mb-4">Withdrawal History</h4>
+      @if (!empty($status))
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
+          <h4 class="mb-0">{{ ucfirst($status) }} Withdrawals</h4>
+          <a href="{{ route('admin.withdrawals') }}" class="btn btn-sm btn-outline-secondary">Show all withdrawals</a>
+        </div>
+      @else
+        <h4 class="mb-4">Withdrawal History</h4>
+      @endif
 
       @if($withdrawals->count())
         <div class="table-responsive">

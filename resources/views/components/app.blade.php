@@ -41,7 +41,8 @@
     <link rel="stylesheet" type="text/css" href="assets/plugins/slick/slick-theme.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu&amp;display=swap" rel="stylesheet">
+    <!-- Logo wordmark font (also used by the loader) -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&amp;display=swap" rel="stylesheet">
     <!-- main css for template -->
     <link rel="stylesheet" href="assets/css/style16791679.css?6" />
 
@@ -296,7 +297,7 @@
             --footer-bg-color: #000000;
         }
 
-        /* Preloader: arrow draws itself inside the mark, a slow arc orbits it, name and bar fade up */
+        /* Preloader: bars rise and the swoosh sweeps in, a slow arc orbits the mark, name and bar fade up */
         .preloader {
             background: radial-gradient(circle at 50% 45%, rgba(52, 232, 52, 0.10) 0%, rgba(0, 0, 0, 0) 45%), #000000;
         }
@@ -350,44 +351,61 @@
         }
 
         .loader__mark {
-            width: 56px;
-            height: 56px;
-            border-radius: 14px;
+            width: 64px;
+            height: 64px;
+            overflow: visible;
             animation: loader-breathe 2.4s ease-in-out infinite;
         }
 
-        .loader__line,
-        .loader__head {
-            fill: none;
-            stroke: #000000;
-            stroke-width: 3.5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-dasharray: 1;
-            stroke-dashoffset: 1;
+        /* the four bars rise one after another */
+        .loader__col {
+            fill: #34E834;
+            transform-box: fill-box;
+            transform-origin: bottom;
+            animation: loader-col 2.4s cubic-bezier(0.2, 0.7, 0.2, 1) infinite;
         }
 
-        .loader__line {
-            animation: loader-draw-line 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+        .loader__col:nth-of-type(2) { animation-delay: 0.1s; }
+        .loader__col:nth-of-type(3) { animation-delay: 0.2s; }
+        .loader__col:nth-of-type(4) { animation-delay: 0.3s; }
+
+        /* then the gold swoosh sweeps in from the left and the arrowhead lands */
+        .loader__swoosh {
+            fill: #E8D27C;
+            animation: loader-swoosh 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
         }
 
-        .loader__head {
-            animation: loader-draw-head 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+        .loader__arrow {
+            fill: #E8D27C;
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: loader-arrow 2.4s cubic-bezier(0.2, 0.7, 0.2, 1) infinite;
         }
 
         .loader__name {
-            font-family: 'Ubuntu', sans-serif;
-            font-size: 0.8rem;
-            font-weight: 500;
-            letter-spacing: 0.28em;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.85);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+            line-height: 1;
             opacity: 0;
             animation: loader-rise 0.9s 0.3s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
         }
 
-        .loader__name span {
+        .loader__name strong {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: 0.02em;
             color: #34E834;
+        }
+
+        .loader__name span {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.32em;
+            margin-right: -0.32em; /* keep the spaced text optically centred */
+            color: #E8D27C;
         }
 
         .loader__bar {
@@ -415,23 +433,31 @@
         }
 
         @keyframes loader-breathe {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(52, 232, 52, 0); transform: scale(1); }
-            50% { box-shadow: 0 0 32px 2px rgba(52, 232, 52, 0.35); transform: scale(1.03); }
+            0%, 100% { filter: drop-shadow(0 0 0 rgba(52, 232, 52, 0)); }
+            50% { filter: drop-shadow(0 0 10px rgba(52, 232, 52, 0.45)); }
         }
 
-        /* line draws, arrowhead follows, both hold, then fade out before the next cycle */
-        @keyframes loader-draw-line {
-            0% { stroke-dashoffset: 1; opacity: 1; }
-            40% { stroke-dashoffset: 0; opacity: 1; }
-            80% { stroke-dashoffset: 0; opacity: 1; }
-            95%, 100% { stroke-dashoffset: 0; opacity: 0; }
+        /* each cycle: bars rise, swoosh sweeps, arrow lands, all hold, then fade before the next */
+        @keyframes loader-col {
+            0% { transform: scaleY(0); opacity: 0; }
+            22% { transform: scaleY(1); opacity: 1; }
+            82% { transform: scaleY(1); opacity: 1; }
+            96%, 100% { transform: scaleY(1); opacity: 0; }
         }
 
-        @keyframes loader-draw-head {
-            0%, 32% { stroke-dashoffset: 1; opacity: 1; }
-            52% { stroke-dashoffset: 0; opacity: 1; }
-            80% { stroke-dashoffset: 0; opacity: 1; }
-            95%, 100% { stroke-dashoffset: 0; opacity: 0; }
+        @keyframes loader-swoosh {
+            0%, 30% { clip-path: inset(0 100% 0 0); opacity: 1; }
+            55% { clip-path: inset(0 0 0 0); opacity: 1; }
+            82% { clip-path: inset(0 0 0 0); opacity: 1; }
+            96%, 100% { clip-path: inset(0 0 0 0); opacity: 0; }
+        }
+
+        @keyframes loader-arrow {
+            0%, 50% { transform: scale(0.3); opacity: 0; }
+            60% { transform: scale(1.15); opacity: 1; }
+            66% { transform: scale(1); opacity: 1; }
+            82% { transform: scale(1); opacity: 1; }
+            96%, 100% { transform: scale(1); opacity: 0; }
         }
 
         @keyframes loader-rise {
@@ -447,14 +473,11 @@
         @media (prefers-reduced-motion: reduce) {
             .loader__orbit,
             .loader__mark,
+            .loader__col,
+            .loader__swoosh,
+            .loader__arrow,
             .loader__bar span {
                 animation: none;
-            }
-
-            .loader__line,
-            .loader__head {
-                animation: none;
-                stroke-dashoffset: 0;
             }
         }
     </style>

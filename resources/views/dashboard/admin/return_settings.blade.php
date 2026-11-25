@@ -19,6 +19,10 @@
     .rs-code { background: #111827; color: #e5e7eb; border-radius: 8px; padding: 12px 14px; font-family: Consolas, monospace; font-size: 13px; overflow-x: auto; white-space: nowrap; }
     .form-switch .form-check-input { width: 2.6em; height: 1.4em; cursor: pointer; }
     .form-switch .form-check-input:checked { background-color: #34E834; border-color: #34E834; }
+    .rs-alert { background: #fff7ed; border: 1px solid #fdba74; border-left: 5px solid #ea580c; border-radius: 10px; padding: 18px 20px; margin-bottom: 24px; color: #7c2d12; font-size: 14px; }
+    .rs-alert-title { font-weight: 700; font-size: 15px; margin-bottom: 8px; color: #9a3412; }
+    .rs-alert-steps { color: #7c2d12; }
+    .rs-alert-foot { margin-top: 10px; font-size: 12px; color: #9a3412; opacity: .85; }
     .rs-confirm { display: none; margin-top: 12px; padding: 12px 14px; border: 1px solid #fde68a; background: #fffbeb; border-radius: 8px; font-size: 14px; }
   </style>
 
@@ -35,6 +39,28 @@
     @if ($errors->any())
       <div class="alert alert-danger">{{ $errors->first() }}</div>
     @endif
+
+    {{-- Only shown when the server's scheduled task isn't checking in --}}
+    @unless ($cronRunning)
+      <div class="rs-alert">
+        <div class="rs-alert-title">
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          Automatic payouts aren't running: the server's scheduled task is {{ $schedulerLastSeen ? 'no longer running (last seen ' . $schedulerLastSeen->diffForHumans() . ')' : 'missing' }}.
+        </div>
+        <p class="mb-2">
+          Daily returns won't be paid until this is fixed. Missed days are paid automatically once it's running again.
+          Send this to your developer or host:
+        </p>
+        <p class="rs-alert-steps mb-2">
+          In cPanel, open <strong>Cron Jobs</strong>, choose <strong>Once Per Minute (* * * * *)</strong>, and add this command:
+        </p>
+        <div class="d-flex gap-2 align-items-stretch flex-wrap">
+          <div class="rs-code flex-grow-1" id="cronCommand">{{ $cronCommand }}</div>
+          <button type="button" class="btn btn-outline-dark btn-sm" id="copyCronBtn"><i class="fas fa-copy me-1"></i>Copy</button>
+        </div>
+        <p class="rs-alert-foot mb-0">This message disappears within a minute of the task starting to run.</p>
+      </div>
+    @endunless
 
     {{-- Status --}}
     <div class="row g-3 mb-4">
@@ -55,15 +81,15 @@
       <div class="col-6 col-lg-3">
         <div class="rs-stat">
           <div class="label">Server cron</div>
-          @if ($schedulerLastSeen && $schedulerLastSeen->gt(now()->subMinutes(3)))
+          @if ($cronRunning)
             <div class="value rs-ok">Running</div>
             <div class="hint">Last check {{ $schedulerLastSeen->diffForHumans() }}</div>
           @elseif ($schedulerLastSeen)
-            <div class="value rs-warn">Stopped?</div>
+            <div class="value rs-warn">Stopped</div>
             <div class="hint">Last seen {{ $schedulerLastSeen->diffForHumans() }}</div>
           @else
             <div class="value rs-off">Not detected</div>
-            <div class="hint">See setup below</div>
+            <div class="hint">See the warning above</div>
           @endif
         </div>
       </div>
@@ -140,17 +166,6 @@
         </div>
       @endif
     </div>
-
-    {{-- Cron setup --}}
-    <div class="rs-card">
-      <h5>One-time server setup</h5>
-      <p class="rs-sub">
-        The payout time above only works if the server runs Laravel's scheduler every minute. In cPanel open
-        <strong>Cron Jobs</strong>, choose <strong>Once Per Minute (* * * * *)</strong>, and paste this command.
-        The "Server cron" box above turns green within a minute once it's working.
-      </p>
-      <div class="rs-code">{{ $cronCommand }}</div>
-    </div>
   </div>
 
   <script>
@@ -159,6 +174,23 @@
       var box = document.getElementById('runNowConfirm');
       document.getElementById('runNowCancel').addEventListener('click', function () { box.style.display = 'none'; btn.style.display = ''; });
       btn.addEventListener('click', function () { box.style.display = 'block'; btn.style.display = 'none'; });
+
+      var copyBtn = document.getElementById('copyCronBtn');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', function () {
+          var text = document.getElementById('cronCommand').innerText.trim();
+          var done = function () { copyBtn.innerHTML = '<i class="fas fa-check me-1"></i>Copied'; };
+          if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(done);
+          } else {
+            // Fallback for plain http: select the text so the admin can press Ctrl+C
+            var range = document.createRange();
+            range.selectNodeContents(document.getElementById('cronCommand'));
+            var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+            try { document.execCommand('copy'); done(); } catch (e) {}
+          }
+        });
+      }
     })();
   </script>
 </x-admin>

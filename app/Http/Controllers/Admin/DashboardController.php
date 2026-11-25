@@ -117,10 +117,20 @@ class DashboardController extends Controller
         return response()->json(['success' => true, 'message' => 'Deposit approved successfully!']);
     }
 
-    public function allDeposits()
+    public function allDeposits(Request $request)
     {
-        $deposits = Deposit::with('user')->latest()->paginate(10);
-        return view('dashboard.admin.deposit_history', compact('deposits'));
+        // Optional ?status=pending|approved|declined (e.g. from the dashboard's "Pending Deposits" card)
+        $status = in_array($request->query('status'), ['pending', 'approved', 'declined'], true)
+            ? $request->query('status')
+            : null;
+
+        $deposits = Deposit::with('user')
+            ->when($status, fn ($query) => $query->where('status', $status))
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('dashboard.admin.deposit_history', compact('deposits', 'status'));
     }
 
     public function sendMail(Request $request)

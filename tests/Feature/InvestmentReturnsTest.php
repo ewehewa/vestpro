@@ -176,6 +176,26 @@ class InvestmentReturnsTest extends TestCase
         $this->assertSame(500.0, (float) $this->user->fresh()->balance);
     }
 
+    public function test_cron_warning_shows_only_while_the_scheduler_is_not_running(): void
+    {
+        $admin = Admin::create(['name' => 'Admin', 'email' => 'admin@example.com', 'password' => bcrypt('secret')]);
+        $warning = "Automatic payouts aren't running";
+
+        // Never seen: warning with the command
+        $this->actingAs($admin, 'admin')->get(route('admin.settings.returns'))
+            ->assertOk()->assertSee($warning, false)->assertSee('is missing', false)->assertSee('artisan schedule:run');
+
+        // Scheduler checks in: warning gone
+        $this->artisan('investments:credit-returns')->assertSuccessful();
+        $this->actingAs($admin, 'admin')->get(route('admin.settings.returns'))
+            ->assertOk()->assertDontSee($warning, false)->assertDontSee('artisan schedule:run')->assertSee('Running');
+
+        // Scheduler stops for 10 minutes: warning is back, saying when it was last seen
+        $this->travel(10)->minutes();
+        $this->actingAs($admin, 'admin')->get(route('admin.settings.returns'))
+            ->assertOk()->assertSee($warning, false)->assertSee('no longer running', false);
+    }
+
     public function test_admin_can_view_save_and_run_the_returns_settings(): void
     {
         $admin = Admin::create(['name' => 'Admin', 'email' => 'admin@example.com', 'password' => bcrypt('secret')]);

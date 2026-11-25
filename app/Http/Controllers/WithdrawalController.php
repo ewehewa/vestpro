@@ -84,9 +84,19 @@ public function submitWithdrawal(Request $request)
     }
 }
 
-    public function showWithdrawalHistory()
+    public function showWithdrawalHistory(Request $request)
     {
-        $withdrawals = Withdrawal::with('user')->latest()->paginate(10);
-        return view('dashboard.admin.withdrawal_history', compact('withdrawals'));
+        // Optional ?status=pending|approved|declined (e.g. from the dashboard's "Pending Withdrawals" card)
+        $status = in_array($request->query('status'), ['pending', 'approved', 'declined'], true)
+            ? $request->query('status')
+            : null;
+
+        $withdrawals = Withdrawal::with('user')
+            ->when($status, fn ($query) => $query->where('status', $status))
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('dashboard.admin.withdrawal_history', compact('withdrawals', 'status'));
     }
 }

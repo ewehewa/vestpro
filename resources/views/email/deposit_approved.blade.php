@@ -1,18 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Deposit Approved</title>
-</head>
-<body>
-  <h2>Hi {{ $deposit->user->name }},</h2>
+@extends('email.layout')
 
-  <p>Your deposit of <strong>${{ number_format($deposit->amount, 2) }}</strong> has been approved successfully.</p>
+@section('subject', 'Deposit Approved')
 
-  <p>Payment Method: {{ $deposit->payment_mode }}</p>
-
-  <p>Thank you for investing with us.</p>
-
-  <p>Regards,<br>Strategic Investment Pro</p>
-</body>
-</html>
+@section('content')
+  <h2 style="color:#333;margin-top:0;">Hi {{ $deposit->user->name }},</h2>
+  <p style="color:#555;font-size:16px;line-height:1.6;">
+    Your deposit of <strong>${{ number_format($deposit->amount, 2) }}</strong> has been approved successfully.
+  </p>
+  <p style="color:#555;font-size:16px;line-height:1.6;">
+    Payment Method: {{ $deposit->payment_mode }}
+  </p>
+  <p style="color:#555;font-size:16px;line-height:1.6;">
+    Thank you for investing with us.
+  </p>
+  <p style="margin-top:40px;color:#555;">
+    Regards,<br><strong>Strategic Investment Pro</strong>
+  </p>
+@endsection
