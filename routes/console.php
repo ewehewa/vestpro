@@ -27,7 +27,8 @@ Schedule::command('currency:refresh-rates')->daily();
 
 // Sends queued emails (alerts). cPanel can't keep a permanent worker running, so the
 // worker starts every minute, sends whatever is waiting, and exits.
+// Runs in the foreground: shared hosts often kill background processes started by cron,
+// which also left a stale overlap lock. The lock now expires after 5 minutes.
 Schedule::command('queue:work --stop-when-empty --max-time=50 --tries=3')
     ->everyMinute()
-    ->withoutOverlapping()
-    ->runInBackground();
+    ->withoutOverlapping(5);
